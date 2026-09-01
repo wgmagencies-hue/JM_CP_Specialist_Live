@@ -1,0 +1,2308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J.M_CP Specialist — Live</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EDE6D6;
+    --paper-2:#E4DBC6;
+    --surface:#FBF9F3;
+    --ink:#21281F;
+    --ink-soft:#4B5245;
+    --forest:#2B4B3C;
+    --forest-dark:#1C3128;
+    --ochre:#B8722E;
+    --red:#8C2A2A;
+    --green-stamp:#3C6B4A;
+    --amber-stamp:#B8722E;
+    --line: rgba(33,40,31,0.16);
+    --shadow: 0 1px 0 rgba(33,40,31,0.06), 0 8px 24px rgba(33,40,31,0.08);
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 100% -10%, rgba(184,114,46,0.10), transparent 60%),
+      var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .app{
+    display:flex;
+    min-height:100vh;
+  }
+  /* ---------- Sidebar: folder tabs ---------- */
+  .sidebar{
+    width:220px;
+    flex:0 0 220px;
+    padding:22px 0 22px 18px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .brand{
+    padding:0 14px 18px 4px;
+  }
+  .brand .mark{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.14em;
+    color:var(--forest);
+    background:rgba(43,75,60,0.10);
+    border:1px solid rgba(43,75,60,0.25);
+    padding:3px 8px;
+    border-radius:3px;
+  }
+  .brand .dot{width:6px;height:6px;border-radius:50%;background:var(--green-stamp);box-shadow:0 0 0 3px rgba(60,107,74,0.18);}
+  .brand h1{
+    font-family:'Source Serif 4', serif;
+    font-size:22px;
+    font-weight:700;
+    margin:10px 0 2px;
+    color:var(--forest-dark);
+    line-height:1.15;
+  }
+  .brand p{
+    margin:0;
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+  .tabs{display:flex;flex-direction:column;gap:2px;margin-top:8px;}
+  .tab{
+    position:relative;
+    text-align:left;
+    background:transparent;
+    border:1px solid transparent;
+    border-right:none;
+    padding:11px 16px;
+    font-family:'IBM Plex Sans';
+    font-size:13.5px;
+    font-weight:500;
+    color:var(--ink-soft);
+    cursor:pointer;
+    border-radius:8px 0 0 8px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .tab .n{font-family:'IBM Plex Mono';font-size:10px;color:var(--ochre);}
+  .tab:hover{background:rgba(43,75,60,0.06); color:var(--ink);}
+  .tab.active{
+    background:var(--surface);
+    color:var(--forest-dark);
+    font-weight:600;
+    border:1px solid var(--line);
+    border-right:1px solid var(--surface);
+    box-shadow:-2px 0 0 var(--ochre) inset;
+  }
+  .risk-count{
+    margin-left:auto;
+    font-family:'IBM Plex Mono';
+    font-size:10px;
+    background:var(--red);
+    color:#fff;
+    padding:1px 6px;
+    border-radius:10px;
+  }
+  .sidebar-foot{
+    margin-top:auto;
+    padding:14px 16px 0 4px;
+    font-size:11px;
+    color:var(--ink-soft);
+    line-height:1.5;
+  }
+  .helpline{
+    margin-top:10px;
+    background:var(--forest-dark);
+    color:#F3EFE2;
+    border-radius:8px;
+    padding:10px 12px;
+    font-size:12px;
+    line-height:1.5;
+  }
+  .helpline b{color:#F6D9B0;}
+
+  /* ---------- Main panel ---------- */
+  .main{
+    flex:1;
+    background:var(--surface);
+    margin:14px 14px 14px 0;
+    border-radius:14px;
+    border:1px solid var(--line);
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+  }
+  .eg-draft-banner{
+    background:#F7EEDD; border-bottom:1px solid var(--ochre); color:#7A4E15;
+    font-size:12px; padding:8px 22px; font-family:'IBM Plex Mono';
+  }
+  .app-disclaimer{
+    font-size:11px; color:var(--ink-soft); padding:6px 22px; border-bottom:1px solid var(--line);
+    font-style:italic;
+  }
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 22px;
+    border-bottom:1px solid var(--line);
+  }
+  .topbar h2{
+    font-family:'Source Serif 4', serif;
+    font-size:18px;
+    margin:0;
+    color:var(--forest-dark);
+  }
+  .topbar .sub{font-size:12px;color:var(--ink-soft); margin-top:2px;}
+  .langsw{display:flex;gap:4px;background:var(--paper-2);padding:3px;border-radius:8px;}
+  .langsw button{
+    border:none;background:transparent;padding:6px 11px;border-radius:6px;
+    font-family:'IBM Plex Mono';font-size:11.5px;letter-spacing:.03em;
+    cursor:pointer;color:var(--ink-soft);
+  }
+  .langsw button.active{background:var(--forest); color:#fff;}
+
+  .panel{flex:1; min-height:0; display:flex; flex-direction:column;}
+  .hide{display:none !important;}
+
+  /* ---------- Chat ---------- */
+  .chatlog{
+    flex:1; overflow-y:auto; padding:22px; display:flex; flex-direction:column; gap:14px;
+  }
+  .msg{max-width:74%; padding:12px 14px; border-radius:12px; font-size:14px; line-height:1.55; white-space:pre-wrap;}
+  .msg.agent{background:var(--paper-2); border:1px solid var(--line); align-self:flex-start; border-bottom-left-radius:3px;}
+  .msg.user{background:var(--forest); color:#fff; align-self:flex-end; border-bottom-right-radius:3px;}
+  .msg.system{align-self:center; background:transparent; color:var(--ink-soft); font-size:12px; font-family:'IBM Plex Mono'; text-align:center; max-width:90%;}
+  .msg.flag{border:1px solid var(--red); background:#F7E9E4; color:#5c1c1c; align-self:flex-start;}
+  .typing{align-self:flex-start; font-family:'IBM Plex Mono'; font-size:12px; color:var(--ink-soft);}
+  .chat-input{
+    border-top:1px solid var(--line); padding:14px 18px; display:flex; gap:10px; align-items:flex-end;
+  }
+  .chat-input textarea{
+    flex:1; resize:none; border:1px solid var(--line); border-radius:10px; padding:11px 13px;
+    font-family:'IBM Plex Sans'; font-size:14px; min-height:44px; max-height:120px; background:#fff;
+  }
+  .chat-input textarea:focus{outline:2px solid var(--forest); outline-offset:1px;}
+  .send-btn{
+    background:var(--forest); color:#fff; border:none; border-radius:10px; padding:12px 18px;
+    font-weight:600; font-size:13.5px; cursor:pointer;
+  }
+  .send-btn:disabled{opacity:.5; cursor:default;}
+  .mic-btn, .voice-toggle{
+    flex:0 0 auto; width:42px; height:42px; border-radius:10px; border:1px solid var(--line);
+    background:var(--surface); font-size:17px; cursor:pointer;
+  }
+  .mic-btn.listening{background:var(--red); border-color:var(--red); animation:pulse 1.1s infinite;}
+  .voice-toggle.on{background:var(--forest); border-color:var(--forest); filter:brightness(1.3);}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(140,42,42,.4);} 70%{box-shadow:0 0 0 8px rgba(140,42,42,0);} 100%{box-shadow:0 0 0 0 rgba(140,42,42,0);}}
+  .voice-note{
+    padding:6px 22px; font-size:11.5px; color:var(--ink-soft); font-family:'IBM Plex Mono';
+    border-top:1px solid var(--line);
+  }
+
+  /* ---------- Forms ---------- */
+  .formwrap{flex:1; overflow-y:auto; padding:24px 28px 60px;}
+  /* ---------- Conversational case wizard ---------- */
+  .wiz{max-width:560px; margin:10px auto 0;}
+  .wiz-progress{height:5px; background:var(--paper-2); border-radius:3px; overflow:hidden; margin-bottom:8px;}
+  .wiz-progress-bar{height:100%; background:var(--ochre); border-radius:3px; transition:width .25s ease;}
+  .wiz-count{font-family:'IBM Plex Mono'; font-size:11px; color:var(--ink-soft); margin-bottom:22px;}
+  .wiz-q{font-family:'Source Serif 4', serif; font-size:21px; line-height:1.4; color:var(--forest-dark); margin-bottom:6px;}
+  .wiz-hint{font-size:12px; color:var(--ink-soft); margin-bottom:16px;}
+  .wiz-input{width:100%; border:1px solid var(--line); border-radius:10px; padding:13px 14px; font-size:15px; font-family:'IBM Plex Sans'; background:#fff;}
+  .wiz-input:focus{outline:2px solid var(--forest); outline-offset:1px;}
+  .wiz-opts{display:flex; flex-direction:column; gap:8px;}
+  .wiz-opt-btn{
+    text-align:left; padding:13px 16px; border-radius:10px; border:1px solid var(--line); background:#fff;
+    font-size:14.5px; cursor:pointer; font-family:'IBM Plex Sans'; color:var(--ink);
+  }
+  .wiz-opt-btn:hover{border-color:var(--forest); background:rgba(43,75,60,0.05);}
+  .wiz-opt-btn.selected{border-color:var(--forest); background:var(--forest); color:#fff; font-weight:600;}
+  .wiz-nav{display:flex; gap:10px; align-items:center; margin-top:22px;}
+  .wiz-nav .spacer{flex:1;}
+  .wiz-err{color:var(--red); font-size:12.5px; margin-top:8px;}
+  .wiz-review{}
+  .wiz-review h3{font-family:'Source Serif 4'; font-size:19px; color:var(--forest-dark); margin:0 0 14px;}
+  .wiz-row{display:flex; justify-content:space-between; gap:16px; padding:9px 0; border-bottom:1px solid var(--line); font-size:13.5px;}
+  .wiz-row .k{color:var(--ink-soft); flex:0 0 auto;}
+  .wiz-row .v{text-align:right; color:var(--ink); max-width:65%;}
+  .wiz-row button{border:none; background:none; color:var(--forest); font-size:11.5px; cursor:pointer; text-decoration:underline; margin-left:8px;}
+
+  /* ---------- Emergency classification & actions ---------- */
+  .em-toggle{display:flex; gap:8px; margin:14px 0;}
+  .em-toggle button{
+    flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:#fff;
+    font-weight:600; font-size:13.5px; cursor:pointer;
+  }
+  .em-toggle button.sel-emergency{background:var(--red); border-color:var(--red); color:#fff;}
+  .em-toggle button.sel-standard{background:var(--forest); border-color:var(--forest); color:#fff;}
+  .em-panel{
+    border:1.5px solid var(--red); background:#FBF1EE; border-radius:12px; padding:14px 16px; margin:12px 0;
+  }
+  .em-title{font-family:'Source Serif 4'; font-weight:700; color:var(--red); font-size:15px; margin-bottom:10px;}
+  .em-btns{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:8px;}
+  .em-call-btn{
+    display:inline-flex; align-items:center; gap:6px; padding:10px 14px; border-radius:9px;
+    background:#fff; border:1px solid var(--red); color:var(--red); text-decoration:none;
+    font-size:13px; font-weight:600;
+  }
+  .em-call-btn.em-116{background:var(--red); color:#fff;}
+  .em-call-btn.em-mail{border-color:var(--forest); color:var(--forest);}
+  .em-hint{font-size:11.5px; color:var(--ink-soft); font-style:italic;}
+  .setup-intro{font-size:13px; color:var(--ink-soft); line-height:1.6; margin-bottom:18px;}
+
+  /* ---------- Ekegusii glossary ---------- */
+  .gloss-card{border:1px solid var(--line); border-radius:10px; background:#fff; padding:14px 16px; margin-bottom:12px;}
+  .gloss-card.pending{border-color:var(--ochre); background:#FBF6EC;}
+  .gloss-term{font-family:'Source Serif 4'; font-size:17px; color:var(--forest-dark); margin:0 0 4px;}
+  .gloss-context{font-size:12px; color:var(--ink-soft); font-style:italic; margin-bottom:10px; line-height:1.5;}
+  .gloss-meaning-row{display:flex; gap:8px; align-items:center; margin-bottom:10px;}
+  .gloss-meaning-row input{flex:1; border:1px solid var(--line); border-radius:7px; padding:8px 10px; font-size:13px;}
+  .gloss-actions{display:flex; gap:8px;}
+  .gloss-actions button{font-size:12px; padding:7px 14px; border-radius:7px; border:1px solid var(--line); cursor:pointer; font-weight:600;}
+  .gloss-approve{background:var(--forest); color:#fff; border-color:var(--forest) !important;}
+  .gloss-reject{background:#fff; color:var(--red); border-color:var(--red) !important;}
+  .gloss-approved-row{display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--line); font-size:13.5px;}
+  .gloss-approved-row .term{font-weight:600; color:var(--forest-dark);}
+  .gloss-approved-row .meaning{color:var(--ink-soft); flex:1; margin:0 12px; text-align:right;}
+  .gloss-approved-row button{border:none; background:none; color:var(--red); font-size:11.5px; cursor:pointer; text-decoration:underline;}
+  .section{margin-bottom:22px; border:1px solid var(--line); border-radius:10px; background:#fff; overflow:hidden;}
+  .section h3{
+    margin:0; padding:12px 16px; background:var(--paper-2); font-family:'Source Serif 4', serif;
+    font-size:15px; color:var(--forest-dark); display:flex; align-items:center; gap:8px;
+    border-bottom:1px solid var(--line);
+  }
+  .section h3 .idx{font-family:'IBM Plex Mono'; font-size:11px; color:var(--ochre);}
+  .section .body{padding:16px;}
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .field{display:flex; flex-direction:column; gap:5px;}
+  .field label{font-size:12px; font-weight:600; color:var(--ink-soft);}
+  .field label .opt{font-weight:400; font-style:italic; color:#8b8272;}
+  .field input, .field select, .field textarea{
+    border:1px solid var(--line); border-radius:8px; padding:9px 10px; font-family:'IBM Plex Sans'; font-size:13.5px; background:var(--surface);
+  }
+  .field textarea{resize:vertical; min-height:70px;}
+  .field input:focus, .field select:focus, .field textarea:focus{outline:2px solid var(--forest); outline-offset:1px;}
+  .full{grid-column:1 / -1;}
+  .hintbox{font-size:11.5px; color:var(--ink-soft); margin-top:6px; background:var(--paper); border-left:2px solid var(--ochre); padding:6px 9px; border-radius:4px;}
+  .sib-row{display:grid; grid-template-columns:2fr 1fr 1fr auto; gap:10px; margin-bottom:8px; align-items:end;}
+  .rm-btn{background:none; border:1px solid var(--line); border-radius:6px; padding:8px 10px; cursor:pointer; color:var(--red); font-size:12px;}
+  .add-btn{background:none; border:1px dashed var(--ochre); color:var(--ochre); border-radius:8px; padding:8px 12px; font-size:12.5px; cursor:pointer; font-weight:600;}
+  .submitbar{display:flex; gap:10px; align-items:center; margin-top:6px;}
+  .primary-btn{background:var(--forest); color:#fff; border:none; border-radius:10px; padding:12px 22px; font-weight:600; font-size:14px; cursor:pointer;}
+  .ghost-btn{background:transparent; border:1px solid var(--line); border-radius:10px; padding:12px 18px; font-weight:600; font-size:13px; cursor:pointer; color:var(--ink);}
+  .warn{font-size:12.5px; color:var(--red); font-weight:600;}
+  .jotlink{font-size:12px; color:var(--ink-soft);}
+  .jotlink a{color:var(--forest); font-weight:600;}
+
+  /* ---------- Case log ---------- */
+  .logwrap{flex:1; overflow-y:auto; padding:22px 26px;}
+  .case-card{
+    display:flex; gap:14px; align-items:flex-start; padding:14px 16px; border:1px solid var(--line);
+    border-radius:10px; background:#fff; margin-bottom:12px;
+  }
+  .stamp{
+    flex:0 0 auto; width:64px; height:64px; border-radius:50%; border:2px dashed;
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    font-family:'IBM Plex Mono'; font-size:10px; font-weight:700; letter-spacing:.04em;
+    transform:rotate(-8deg); line-height:1.2;
+  }
+  .stamp.high{border-color:var(--red); color:var(--red);}
+  .stamp.standard{border-color:var(--amber-stamp); color:var(--amber-stamp);}
+  .case-meta{flex:1;}
+  .case-meta .top{display:flex; gap:10px; align-items:baseline; flex-wrap:wrap;}
+  .case-meta .id{font-family:'IBM Plex Mono'; font-size:11px; color:var(--ink-soft);}
+  .case-meta h4{margin:2px 0 4px; font-family:'Source Serif 4'; font-size:16px; color:var(--forest-dark);}
+  .case-meta p{margin:0; font-size:12.5px; color:var(--ink-soft); line-height:1.5;}
+  .case-actions{display:flex; gap:8px; margin-top:8px;}
+  .case-actions button{font-size:11.5px; padding:6px 10px; border-radius:6px; border:1px solid var(--line); background:var(--surface); cursor:pointer;}
+  .empty{padding:40px 20px; text-align:center; color:var(--ink-soft); font-size:13.5px;}
+  .empty .big{font-family:'Source Serif 4'; font-size:20px; color:var(--forest-dark); margin-bottom:6px;}
+
+  /* ---------- Guide ---------- */
+  .guidewrap{flex:1; overflow-y:auto; padding:26px 30px;}
+  .guidewrap h3{font-family:'Source Serif 4'; color:var(--forest-dark); font-size:17px; margin:26px 0 10px;}
+  .guidewrap h3:first-child{margin-top:0;}
+  .guidewrap p, .guidewrap li{font-size:13.5px; line-height:1.7; color:var(--ink);}
+  .path{
+    display:flex; flex-direction:column; gap:0; margin:10px 0 4px; border-left:2px solid var(--ochre); padding-left:16px;
+  }
+  .path .step{position:relative; padding:8px 0;}
+  .path .step::before{content:''; position:absolute; left:-21px; top:14px; width:9px; height:9px; border-radius:50%; background:var(--ochre); border:2px solid var(--surface);}
+  .path .step b{color:var(--forest-dark);}
+  .disclaim{
+    background:var(--paper-2); border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-size:12px;
+    color:var(--ink-soft); margin:10px 0 20px;
+  }
+  .badge-note{
+    display:inline-block; font-family:'IBM Plex Mono'; font-size:10.5px; background:rgba(140,42,42,0.1); color:var(--red);
+    border:1px solid rgba(140,42,42,0.3); padding:2px 7px; border-radius:5px; margin-right:6px;
+  }
+
+  ::-webkit-scrollbar{width:9px;}
+  ::-webkit-scrollbar-thumb{background:var(--paper-2); border-radius:6px; border:2px solid var(--surface);}
+
+  @media (max-width:760px){
+    .app{flex-direction:column;}
+    .sidebar{width:auto; flex:none; flex-direction:row; overflow-x:auto; padding:14px; gap:8px; align-items:center;}
+    .brand{padding:0; margin-right:6px;}
+    .tabs{flex-direction:row;}
+    .tab{border-radius:8px; border:1px solid var(--line);}
+    .sidebar-foot{display:none;}
+    .main{margin:0; border-radius:0; min-height:calc(100vh - 78px);}
+    .grid{grid-template-columns:1fr;}
+    .sib-row{grid-template-columns:1fr 1fr; grid-template-areas:"a a" "b c" "d d";}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <div class="sidebar">
+    <div class="brand">
+      <span class="mark"><span class="dot"></span> LIVE — CHAT BUILD</span>
+      <h1>J.M_CP Specialist</h1>
+      <p>Child protection casework assistant</p>
+    </div>
+    <div class="tabs">
+      <button class="tab active" data-tab="chat"><span class="n">01</span> <span data-i18n="tab_chat">Consult</span></button>
+      <button class="tab" data-tab="newcase"><span class="n">02</span> <span data-i18n="tab_new">Record a Case</span></button>
+      <button class="tab" data-tab="log"><span class="n">03</span> <span data-i18n="tab_log">Case Log</span> <span class="risk-count hide" id="riskCount">0</span></button>
+      <button class="tab" data-tab="guide"><span class="n">04</span> <span data-i18n="tab_guide">Referral Pathway</span></button>
+      <button class="tab" data-tab="setup"><span class="n">05</span> <span data-i18n="tab_setup">Emergency Setup</span></button>
+      <button class="tab" data-tab="glossary"><span class="n">06</span> <span data-i18n="tab_glossary">Ekegusii Glossary</span> <span class="risk-count hide" id="glossaryCount">0</span></button>
+      <button class="tab" data-tab="research"><span class="n">07</span> <span data-i18n="tab_research">Research &amp; Updates</span> <span class="risk-count hide" id="researchCount">0</span></button>
+    </div>
+    <div class="sidebar-foot">
+      <div data-i18n="foot_note">Everything here runs live in this chat while the WhatsApp build is in progress. Cases are saved to your private, on-device case log.</div>
+      <div class="helpline">
+        <b data-i18n="help_title">Emergency?</b><br>
+        <span data-i18n="help_body">National Child Helpline — call 116. Free, toll-free, 24/7, all networks.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MAIN ============ -->
+  <div class="main">
+    <div id="egDraftBanner" class="eg-draft-banner hide"></div>
+    <div class="topbar">
+      <div>
+        <h2 id="topTitle" data-i18n="top_chat_title">Consult J.M_CP Specialist</h2>
+        <div class="sub" id="topSub" data-i18n="top_chat_sub">Ask about any child protection matter — reporting, categories, adoption, procedure.</div>
+      </div>
+      <div class="langsw">
+        <button data-lang="en" class="active">EN</button>
+        <button data-lang="sw">SW</button>
+        <button data-lang="eg">EKG</button>
+      </div>
+    </div>
+    <div class="app-disclaimer" data-i18n="app_disclaimer">Decision-support tool — not a replacement for official DCS process or legal advice.</div>
+
+    <!-- ---------- CHAT PANEL ---------- -->
+    <div class="panel" id="panel-chat">
+      <div class="chatlog" id="chatlog"></div>
+      <div id="voiceNote" class="voice-note hide"></div>
+      <div class="chat-input">
+        <button class="mic-btn" id="micBtn" title="Speak instead of typing" type="button">🎤</button>
+        <textarea id="chatInput" data-i18n-ph="chat_ph" placeholder="Describe the matter or ask a question…" rows="1"></textarea>
+        <button class="voice-toggle" id="voiceToggle" type="button" title="Toggle spoken replies">🔊</button>
+        <button class="send-btn" id="sendBtn" data-i18n="send">Send</button>
+      </div>
+    </div>
+
+    <!-- ---------- NEW CASE PANEL ---------- -->
+    <div class="panel hide" id="panel-newcase">
+      <div class="formwrap" id="caseFormWrap"></div>
+    </div>
+
+    <!-- ---------- CASE LOG PANEL ---------- -->
+    <div class="panel hide" id="panel-log">
+      <div class="logwrap" id="logwrap"></div>
+    </div>
+
+    <!-- ---------- GUIDE PANEL ---------- -->
+    <div class="panel hide" id="panel-guide">
+      <div class="guidewrap" id="guidewrap"></div>
+    </div>
+
+    <!-- ---------- EMERGENCY SETUP PANEL ---------- -->
+    <div class="panel hide" id="panel-setup">
+      <div class="formwrap" id="setupWrap"></div>
+    </div>
+
+    <!-- ---------- EKEGUSII GLOSSARY PANEL ---------- -->
+    <div class="panel hide" id="panel-glossary">
+      <div class="formwrap" id="glossaryWrap"></div>
+    </div>
+
+    <!-- ---------- RESEARCH & UPDATES PANEL ---------- -->
+    <div class="panel hide" id="panel-research">
+      <div class="formwrap" id="researchWrap"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   STANDALONE FALLBACK
+   window.storage and the api.anthropic.com fetch both work
+   without any setup ONLY when this file is opened inside
+   Claude (previewed/run from within claude.ai). Opened as a
+   plain downloaded file in an ordinary browser, neither
+   exists — so we detect that and fall back: storage moves to
+   localStorage (same data, same device, just not Claude-hosted),
+   and the chat call uses a personal Anthropic API key the
+   officer pastes in once, under Emergency Setup → Connection.
+   ========================================================= */
+const RUNNING_STANDALONE = (typeof window.storage === "undefined");
+
+if (RUNNING_STANDALONE) {
+  const LS_PREFIX = "jmcp_store::";
+  const nsKey = (key, shared) => LS_PREFIX + (shared ? "shared:" : "p:") + key;
+  window.storage = {
+    async get(key, shared=false){
+      const raw = localStorage.getItem(nsKey(key, shared));
+      if(raw === null) throw new Error("not found");
+      return { key, value: raw, shared };
+    },
+    async set(key, value, shared=false){
+      localStorage.setItem(nsKey(key, shared), value);
+      return { key, value, shared };
+    },
+    async delete(key, shared=false){
+      const k = nsKey(key, shared);
+      const existed = localStorage.getItem(k) !== null;
+      localStorage.removeItem(k);
+      return { key, deleted: existed, shared };
+    },
+    async list(prefix="", shared=false){
+      const pfx = nsKey(prefix, shared);
+      const stripLen = nsKey("", shared).length;
+      const keys = [];
+      for(let i=0;i<localStorage.length;i++){
+        const k = localStorage.key(i);
+        if(k && k.startsWith(pfx)) keys.push(k.slice(stripLen));
+      }
+      return { keys, prefix, shared };
+    }
+  };
+}
+
+function getStoredApiKey(){ return localStorage.getItem("jmcp_api_key") || ""; }
+function setStoredApiKey(v){ if(v) localStorage.setItem("jmcp_api_key", v); else localStorage.removeItem("jmcp_api_key"); }
+
+/* =========================================================
+   DATA: CPIMS case categories (38) with rough risk tiering
+   ========================================================= */
+const CATEGORIES = [
+  ["Abandoned","high"],["Abduction","high"],["Custody","standard"],
+  ["Physical abuse/violence","high"],["Registration","standard"],
+  ["Children on the Street","standard"],["Child labour","standard"],
+  ["Child of imprisoned/detained parent(s)","standard"],
+  ["Sexual exploitation and abuse","high"],["Child Trafficking","high"],
+  ["Parental Child Abduction","high"],["Child infected with HIV","standard"],
+  ["Child in conflict with the law","standard"],["Defilement","high"],
+  ["Child with disability","standard"],["Drug and substance abuse","high"],
+  ["Child Pregnancy","high"],["Child marriage","high"],["Emotional abuse","standard"],
+  ["Harmful cultural practices","high"],["Female Genital Mutilation","high"],
+  ["Incest","high"],["Disinheritance/succession","standard"],
+  ["Internally Displaced Child / Child in Emergency Situations","standard"],
+  ["Missing Child / Lost and found","high"],["Neglect","standard"],
+  ["Online Child Abuse","high"],["Orphaned","standard"],["Refugee child","standard"],
+  ["Sexual assault","high"],["Child Truancy","standard"],["Unlawful confinement","high"],
+  ["Child offer (for adoption)","standard"],["Child out of school","standard"],
+  ["Sick child (chronic illness)","standard"],["Child headed household","standard"],
+  ["Child radicalization","high"],["Forced Male Circumcision","high"]
+];
+
+const FAMILY_STATUS = ["Both parents alive & together","Single parent","Divorced/Separated",
+  "Widowed parent","Child-headed household","Orphan — both parents deceased",
+  "Under guardianship","In foster care","Other"];
+
+/* =========================================================
+   i18n — UI chrome strings. Ekegusii is a first-pass, best
+   effort translation and should be checked by a fluent
+   speaker before being relied on for official use.
+   ========================================================= */
+const STR = {
+  en:{
+    tab_chat:"Consult", tab_new:"Record a Case", tab_log:"Case Log", tab_guide:"Referral Pathway",
+    foot_note:"Everything here runs live in this chat while the WhatsApp build is in progress. Cases are saved to your private, on-device case log.",
+    help_title:"Emergency?", help_body:"National Child Helpline — call 116. Free, toll-free, 24/7, all networks.",
+    top_chat_title:"Consult J.M_CP Specialist", top_chat_sub:"Ask about any child protection matter — reporting, categories, adoption, procedure.",
+    top_new_title:"Record a Case", top_new_sub:"Same order as your paper Case Record Sheet. Officer details and follow-up log are handled outside this form.",
+    top_log_title:"Case Log", top_log_sub:"Saved locally to this device — not shared or synced anywhere else yet.",
+    top_guide_title:"Referral Pathway & Escalation", top_guide_sub:"Field-tested procedure, condensed for quick reference.",
+    chat_ph:"Describe the matter or ask a question…", send:"Send",
+    greeting:"Welcome — I'm J.M_CP Specialist. I've been built around real child protection casework, so treat me like a colleague who's seen a case like this before: reporting procedure, categorisation, adoption and guardianship law, or just thinking a hard one through out loud together. If a child is in immediate danger, call 116 right now — then tell me what's happening and we'll work out the next step.",
+    thinking:"thinking…",
+    save_case:"Save case", clear_form:"Clear form", copy_summary:"Copy summary",
+    err_required:"Add either the parents' particulars or the caregiver's particulars — at least one is required.",
+    err_narrative:"A short case history / narrative is required.",
+    saved_ok:"Case saved to your log.", copied:"Summary copied to clipboard.",
+    view:"View", delete:"Delete", no_cases_big:"No cases recorded yet",
+    no_cases_small:"Cases you record in the \"Record a Case\" tab will appear here, stamped by risk level.",
+    entry_no_label:"Birth certificate Entry No.", entry_no_opt:"(optional — even if yes, you may not have it yet)",
+    tab_setup:"Emergency Setup",
+    emergency_label:"Emergency", not_emergency_label:"Not an emergency",
+    emergency_actions:"Emergency — act now", call_chief:"Call the Chief", call_asstchief:"Call the Assistant Chief",
+    call_police:"Call the Police", call_subcounty:"Call the Sub-county Children's Officer",
+    call_116:"Call 116 (National Child Helpline)", send_emergency_email:"Send emergency email",
+    no_email_set:"No notification email set up yet — add one in Emergency Setup.",
+    setup_title:"Emergency Setup", setup_sub:"Add the contacts an emergency should reach. Saved privately on this device.",
+    setup_intro:"When a case is marked as an emergency — in the case wizard or flagged in chat — you'll get one-tap call buttons for whoever you fill in below, plus 116 as a fallback, and a ready-to-send emergency email.",
+    save_contacts:"Save contacts", contacts_saved:"Contacts saved.",
+    fld_chief_name:"Chief's name", fld_chief_phone:"Chief's phone",
+    fld_asstchief_name:"Assistant Chief's name", fld_asstchief_phone:"Assistant Chief's phone",
+    fld_police_name:"Nearest police station", fld_police_phone:"Police phone",
+    fld_subcounty_name:"Sub-county Children's Officer", fld_subcounty_phone:"Sub-county CPO phone",
+    fld_notify_email:"Emergency notification email",
+    conn_title:"Connection (only needed outside Claude)",
+    conn_intro:"If you opened this file directly (not previewed inside Claude), live chat needs your own Anthropic API key so it can reach the AI itself. Get one free at console.anthropic.com → API Keys. This key is stored only on this device, in this browser — never sent anywhere except Anthropic's own API.",
+    conn_key_label:"Anthropic API key", conn_key_placeholder:"sk-ant-...",
+    conn_save:"Save key", conn_saved:"Key saved.", conn_clear:"Remove key",
+    conn_running_in_claude:"Running inside Claude — no key needed here; chat works automatically.",
+    voice_clone_title:"Your Cloned Voice", voice_clone_intro:"Have spoken replies use your own voice instead of a generic one. Clone your voice once at elevenlabs.io (record a few minutes of samples there — that part has to happen on their site, not here), then paste the resulting API key and Voice ID below.",
+    eg_no_voice_clone_note:"⚠ No speech provider anywhere — ElevenLabs included — supports Ekegusii yet. Your cloned voice works for English and Kiswahili replies only; Ekegusii stays text-only until that changes.",
+    elevenlabs_key_label:"ElevenLabs API key", elevenlabs_voiceid_label:"Voice ID",
+    elevenlabs_save:"Save voice", elevenlabs_saved:"Voice saved.", elevenlabs_clear:"Remove voice",
+    voice_clone_test_btn:"Test voice", voice_test_playing:"Playing…", elevenlabs_error:"Couldn't play that — check your API key and Voice ID.",
+    backup_title:"Backup & Restore", backup_intro:"Everything — case log, glossary, contacts — lives only on this device, in this browser. Export it regularly so you're never one lost phone or cleared cache away from losing real case records.",
+    export_btn:"Export all data (.json)", import_btn:"Restore from backup file",
+    import_confirm:"This will add/overwrite data from the backup file on top of what's here. Continue?",
+    import_success:"Backup restored.", import_error:"Couldn't read that file — make sure it's a backup exported from this app.",
+    app_disclaimer:"Decision-support tool — not a replacement for official DCS process or legal advice.",
+    eg_draft_banner:"Some Ekegusii text on this screen hasn't been reviewed by a fluent speaker yet — check the Referral Pathway and Emergency Setup tabs especially before relying on them with the public.",
+    tab_research:"Research & Updates", research_title:"Research & Updates", research_sub:"Nothing the agent learns from research changes its behaviour until you approve it here.",
+    research_intro:"The agent can search for recent developments relevant to your work — Children Act amendments, newly licensed adoption societies, changed procedures — but only when you ask it to (this file has no way to run in the background on its own), and nothing it finds is used until you approve it below.",
+    run_research_btn:"Run research now", researching_msg:"Searching…",
+    last_checked_label:"Last checked:", never_checked:"Never yet.",
+    stale_check_prompt:"It's been a while — worth running a check.",
+    no_new_findings:"Searched — nothing new or relevant turned up this time.",
+    pending_findings_title:"Waiting for your approval", approved_findings_title:"Confirmed updates",
+    no_pending_findings:"Nothing waiting right now.", no_approved_findings:"No confirmed updates yet.",
+    finding_source_label:"Source:", suggest_label:"Suggested change to the agent",
+    approve_finding_btn:"Approve", reject_finding_btn:"Reject", forget_finding_btn:"Forget",
+    research_error:"Couldn't complete the search — try again in a moment.",
+    tab_glossary:"Ekegusii Glossary", glossary_title:"Ekegusii Glossary", glossary_sub:"Words the agent wasn't sure of, waiting for your approval — plus everything you've already confirmed.",
+    pending_title:"Waiting for your approval", approved_title:"Confirmed glossary",
+    no_pending:"Nothing waiting right now.", no_approved:"No confirmed terms yet.",
+    approve_btn:"Approve", reject_btn:"Reject", meaning_label:"Correct meaning",
+    context_label:"Came up when answering:", flagged_note:"I wasn't fully sure of a word in that reply — flagged it in the Ekegusii Glossary tab for your review.",
+    forget_btn:"Forget",
+  },
+  sw:{
+    tab_chat:"Ushauri", tab_new:"Andika Kesi", tab_log:"Orodha ya Kesi", tab_guide:"Njia ya Rufaa",
+    foot_note:"Kila kitu hapa kinafanya kazi papo hapo katika mazungumzo haya, huku ujenzi wa WhatsApp ukiendelea. Kesi zinahifadhiwa kwa faragha kwenye kifaa chako.",
+    help_title:"Dharura?", help_body:"Simu ya Msaada ya Kitaifa ya Watoto — piga 116. Bure, masaa 24, siku zote, mitandao yote.",
+    top_chat_title:"Uliza J.M_CP Specialist", top_chat_sub:"Uliza swali lolote kuhusu ulinzi wa watoto — kuripoti, aina za kesi, kuasili, taratibu.",
+    top_new_title:"Andika Kesi", top_new_sub:"Mpangilio ni sawa na fomu yako ya karatasi. Maelezo ya afisa na ufuatiliaji hayapo kwenye fomu hii.",
+    top_log_title:"Orodha ya Kesi", top_log_sub:"Zimehifadhiwa kwenye kifaa hiki pekee — bado hazijasambazwa mahali pengine.",
+    top_guide_title:"Njia ya Rufaa na Hatua za Dharura", top_guide_sub:"Taratibu za kazini, kwa muhtasari wa haraka.",
+    chat_ph:"Eleza jambo au uliza swali…", send:"Tuma",
+    greeting:"Karibu — mimi ni J.M_CP Specialist. Nimejengwa kutokana na uzoefu halisi wa kazi ya ulinzi wa watoto, kwa hivyo nichukulie kama mwenzako aliyeshawahi kushughulikia kesi kama hii: taratibu za kuripoti, uainishaji wa kesi, sheria ya kuasili na ulezi, au tu kufikiria pamoja kesi ngumu. Ikiwa mtoto yuko hatarini sasa hivi, piga 116 kwanza — kisha nieleze kinachoendelea, tutafikiria hatua inayofuata pamoja.",
+    thinking:"inafikiri…",
+    save_case:"Hifadhi kesi", clear_form:"Futa fomu", copy_summary:"Nakili muhtasari",
+    err_required:"Jaza maelezo ya wazazi AU ya mlezi — angalau moja linahitajika.",
+    err_narrative:"Maelezo mafupi ya kesi yanahitajika.",
+    saved_ok:"Kesi imehifadhiwa kwenye orodha.", copied:"Muhtasari umenakiliwa.",
+    view:"Angalia", delete:"Futa", no_cases_big:"Hakuna kesi bado",
+    no_cases_small:"Kesi utakazoandika kwenye kichupo cha \"Andika Kesi\" zitaonekana hapa, zikiwa na alama ya hatari.",
+    entry_no_label:"Namba ya Usajili wa Cheti cha Kuzaliwa", entry_no_opt:"(si lazima — hata kama ndiyo, huenda usiwe nayo bado)",
+    tab_setup:"Mipangilio ya Dharura",
+    emergency_label:"Dharura", not_emergency_label:"Si dharura",
+    emergency_actions:"Dharura — chukua hatua sasa", call_chief:"Piga Chifu", call_asstchief:"Piga Chifu Msaidizi",
+    call_police:"Piga Polisi", call_subcounty:"Piga Afisa Watoto wa Sub-county",
+    call_116:"Piga 116 (Simu ya Msaada ya Kitaifa ya Watoto)", send_emergency_email:"Tuma barua pepe ya dharura",
+    no_email_set:"Hakuna barua pepe ya arifa bado — ongeza moja kwenye Mipangilio ya Dharura.",
+    setup_title:"Mipangilio ya Dharura", setup_sub:"Ongeza anwani zinazopaswa kufikiwa dharura ikitokea. Zimehifadhiwa kwa faragha kwenye kifaa hiki.",
+    setup_intro:"Kesi ikiwekwa alama ya dharura — kwenye fomu ya kesi au ikibainishwa kwenye mazungumzo — utapata vitufe vya kupiga simu kwa yeyote uliyejaza hapa chini, pamoja na 116 kama mbadala, na barua pepe ya dharura tayari kutumwa.",
+    save_contacts:"Hifadhi anwani", contacts_saved:"Anwani zimehifadhiwa.",
+    fld_chief_name:"Jina la Chifu", fld_chief_phone:"Namba ya Chifu",
+    fld_asstchief_name:"Jina la Chifu Msaidizi", fld_asstchief_phone:"Namba ya Chifu Msaidizi",
+    fld_police_name:"Kituo cha polisi cha karibu", fld_police_phone:"Namba ya polisi",
+    fld_subcounty_name:"Afisa Watoto wa Sub-county", fld_subcounty_phone:"Namba ya Afisa Sub-county",
+    fld_notify_email:"Barua pepe ya arifa za dharura",
+    conn_title:"Muunganisho (unahitajika nje ya Claude pekee)",
+    conn_intro:"Ikiwa umefungua faili hii moja kwa moja (si ndani ya Claude), mazungumzo yanahitaji ufunguo wako wa API wa Anthropic ili kufikia AI yenyewe. Pata mmoja bure kwenye console.anthropic.com → API Keys. Ufunguo huu unahifadhiwa kwenye kifaa hiki pekee — hautumwi mahali pengine isipokuwa API ya Anthropic.",
+    conn_key_label:"Ufunguo wa API wa Anthropic", conn_key_placeholder:"sk-ant-...",
+    conn_save:"Hifadhi ufunguo", conn_saved:"Ufunguo umehifadhiwa.", conn_clear:"Ondoa ufunguo",
+    conn_running_in_claude:"Inaendeshwa ndani ya Claude — hakuna ufunguo unaohitajika hapa; mazungumzo yanafanya kazi kiotomatiki.",
+    voice_clone_title:"Sauti Yako Iliyorekodiwa", voice_clone_intro:"Fanya majibu ya sauti yatumie sauti yako mwenyewe badala ya ya kawaida. Rekodi sauti yako mara moja kwenye elevenlabs.io (rekodi dakika chache za sampuli huko — sehemu hiyo lazima ifanyike kwenye tovuti yao, si hapa), kisha bandika ufunguo wa API na Voice ID hapa chini.",
+    eg_no_voice_clone_note:"⚠ Hakuna mtoa huduma ya sauti popote — hata ElevenLabs — anayeunga mkono Ekegusii bado. Sauti yako iliyorekodiwa inafanya kazi kwa majibu ya Kiingereza na Kiswahili pekee; Ekegusii inabaki maandishi tu mpaka hilo libadilike.",
+    elevenlabs_key_label:"Ufunguo wa API wa ElevenLabs", elevenlabs_voiceid_label:"Voice ID",
+    elevenlabs_save:"Hifadhi sauti", elevenlabs_saved:"Sauti imehifadhiwa.", elevenlabs_clear:"Ondoa sauti",
+    voice_clone_test_btn:"Jaribu sauti", voice_test_playing:"Inacheza…", elevenlabs_error:"Imeshindwa kucheza — angalia ufunguo wako wa API na Voice ID.",
+    backup_title:"Hifadhi Nakala & Rejesha", backup_intro:"Kila kitu — orodha ya kesi, kamusi, anwani — kinaishi kwenye kifaa hiki pekee, kwenye kivinjari hiki. Toa nakala mara kwa mara ili usipoteze rekodi halisi za kesi kwa sababu ya kupoteza simu au kufuta akiba.",
+    export_btn:"Toa nakala ya data yote (.json)", import_btn:"Rejesha kutoka faili la nakala",
+    import_confirm:"Hii itaongeza/kubadilisha data kutoka faili la nakala juu ya kilichopo. Endelea?",
+    import_success:"Nakala imerejeshwa.", import_error:"Imeshindwa kusoma faili hilo — hakikisha ni nakala iliyotolewa kutoka programu hii.",
+    app_disclaimer:"Zana ya kusaidia maamuzi — si mbadala wa taratibu rasmi za DCS au ushauri wa kisheria.",
+    tab_research:"Utafiti na Masasisho", research_title:"Utafiti na Masasisho", research_sub:"Hakuna anachojifunza wakala kutoka utafiti kinachobadilisha tabia yake mpaka uidhinishe hapa.",
+    research_intro:"Wakala anaweza kutafuta maendeleo mapya yanayohusiana na kazi yako — mabadiliko ya Sheria ya Watoto, vyama vipya vya kuasili vyenye leseni, taratibu zilizobadilika — lakini tu ukimwomba (faili hii haiwezi kufanya kazi yenyewe nyuma ya pazia), na hakuna anachopata kinachotumika mpaka uidhinishe hapa chini.",
+    run_research_btn:"Fanya utafiti sasa", researching_msg:"Inatafuta…",
+    last_checked_label:"Ilikaguliwa mara ya mwisho:", never_checked:"Bado kamwe.",
+    stale_check_prompt:"Muda umepita — inafaa kukagua.",
+    no_new_findings:"Imetafuta — hakuna kipya au muhimu kilichopatikana wakati huu.",
+    pending_findings_title:"Yanasubiri idhini yako", approved_findings_title:"Masasisho yaliyothibitishwa",
+    no_pending_findings:"Hakuna kinachosubiri sasa.", no_approved_findings:"Hakuna masasisho yaliyothibitishwa bado.",
+    finding_source_label:"Chanzo:", suggest_label:"Mabadiliko yanayopendekezwa kwa wakala",
+    approve_finding_btn:"Idhinisha", reject_finding_btn:"Kataa", forget_finding_btn:"Sahau",
+    research_error:"Imeshindwa kukamilisha utafutaji — jaribu tena baadaye kidogo.",
+    tab_glossary:"Kamusi ya Ekegusii", glossary_title:"Kamusi ya Ekegusii", glossary_sub:"Maneno ambayo wakala hakuwa na uhakika nayo, yakisubiri idhini yako — pamoja na yale uliyokwisha thibitisha.",
+    pending_title:"Yanasubiri idhini yako", approved_title:"Kamusi iliyothibitishwa",
+    no_pending:"Hakuna kinachosubiri sasa.", no_approved:"Hakuna maneno yaliyothibitishwa bado.",
+    approve_btn:"Idhinisha", reject_btn:"Kataa", meaning_label:"Maana sahihi",
+    context_label:"Lilitokea wakati wa kujibu:", flagged_note:"Sikuwa na uhakika kamili wa neno moja kwenye jibu hilo — nimeliweka kwenye kichupo cha Kamusi ya Ekegusii kwa ukaguzi wako.",
+    forget_btn:"Sahau",
+  },
+  eg:{
+    tab_chat:"Okobua", tab_new:"Andika Ense", tab_log:"Orodha y'Ense", tab_guide:"Enjira y'Okoirania",
+    foot_note:"Amang'ana onsi ang'eng'eri agokora ime aria WhatsApp egotebwa. Ense chiaandikirwe ime rimwana riao rienyene.",
+    help_title:"Amabaka?", help_body:"Simu y'Obosaakiri bw'Abana — hamba 116. Ekene, betobo makumi abere na ine, ebiro biyonsi.",
+    top_chat_title:"Okobua J.M_CP Specialist", top_chat_sub:"Baria egesio kiugo amang'ana ayio okorenda abana — okoreta ense, ebiba bio, okoresera, na endeni.",
+    top_new_title:"Andika Ense", top_new_sub:"Endeni yayio ende gwakiya karatasi yao. Amang'ana y'omokuru na okoborera te riundu rino.",
+    top_log_title:"Orodha y'Ense", top_log_sub:"Chiandikirwe rimwana riao rienyene — tichitwareirwe ime aria bande.",
+    top_guide_title:"Enjira y'Okoirania n'Amabaka", top_guide_sub:"Endeni y'okoreta amakiaro, ime egesekwa.",
+    chat_ph:"Tebia egetauro kiobo obarie ekemoro…", send:"Toma",
+    greeting:"Nche J.M_CP Specialist — inde igaa gokoorokeireri enchera abana, Ebina Ao Ao, koiraneria amaboorio igoro oboegereri bwa abana ase obwagare. Onye Omwana ore Omochando igoro, aaka esimi 116 bwango, orwe orpoti rwa eki kegenderereti erio oegwe omoroberio o keene buna akonyora obokonyi.",
+    thinking:"nigosakania…",
+    save_case:"Batia ense", clear_form:"Rigiria fomu", copy_summary:"Kururia egesibo",
+    err_required:"Yandika amang'ana y'ababori nagoika ay'omoreri — kimwe naki gietererwe.",
+    err_narrative:"Egesibo gy'ense gietererwe.",
+    saved_ok:"Ense yabatirwe.", copied:"Egesibo gukuruirwe.",
+    view:"Rora", delete:"Sitia", no_cases_big:"Tiyabeire ense",
+    no_cases_small:"Ense chiao noando okoandika ime \"Andika Ense\" chichabonwa aha.",
+    entry_no_label:"Namba y'Echeti cha Okobwarwa", entry_no_opt:"(tigietererwe — kata gakoba, oratabe nayo eintwe)",
+    tab_setup:"Amang'ana y'Amabaka",
+    emergency_label:"Amabaka", not_emergency_label:"Tikio amabaka",
+    emergency_actions:"Amabaka — kora ekero eye", call_chief:"Hamba Chifu", call_asstchief:"Hamba Omokuru wa Chifu",
+    call_police:"Hamba Abapolisi", call_subcounty:"Hamba Omokuru w'Abana wa Sub-county",
+    call_116:"Hamba 116", send_emergency_email:"Toma barua pepe y'amabaka",
+    no_email_set:"Tiyabeire barua pepe eyandikirwe — yongera ime Amang'ana y'Amabaka.",
+    setup_title:"Amang'ana y'Amabaka", setup_sub:"Yongera abanto abakwana bakoirwa amabaka. Chiandikirwe rimwana riao rienyene.",
+    setup_intro:"Ense ekero eandikirwe amabaka, nokobasa okohamba abanto abekare aha, nagoika 116, na okotoma barua pepe y'amabaka.",
+    save_contacts:"Batia amang'ana", contacts_saved:"Amang'ana yabatirwe.",
+    fld_chief_name:"Erieta rya Chifu", fld_chief_phone:"Namba ya Chifu",
+    fld_asstchief_name:"Erieta ry'Omokuru wa Chifu", fld_asstchief_phone:"Namba y'Omokuru wa Chifu",
+    fld_police_name:"Ekituo ky'abapolisi ekiegereire", fld_police_phone:"Namba y'abapolisi",
+    fld_subcounty_name:"Omokuru w'Abana wa Sub-county", fld_subcounty_phone:"Namba y'Omokuru wa Sub-county",
+    fld_notify_email:"Barua pepe y'amabaka",
+    conn_title:"Okotwarana (ekero itari Claude gonyoigo)",
+    conn_intro:"Okobo oigwete file eye buna eyio (tikio ime Claude), okoiga gokoenderia ufunguo wao wa API ya Anthropic. Nyora emwe ekene ime console.anthropic.com → API Keys. Ufunguo oyo obatirwe rimwana riao rienyene.",
+    conn_key_label:"Ufunguo wa API ya Anthropic", conn_key_placeholder:"sk-ant-...",
+    conn_save:"Batia ufunguo", conn_saved:"Ufunguo obatirwe.", conn_clear:"Sitia ufunguo",
+    conn_running_in_claude:"Egotebeka ime Claude — tiyagenderi ufunguo aha; okoiga nigokora onye.",
+    voice_clone_title:"Ekwani Kiao Ekeandikirwe", voice_clone_intro:"Kora omoroberio okorenga ekwani kiao — batia ime elevenlabs.io mbele, kobwo yaparie eyio nigo egendekana.",
+    eg_no_voice_clone_note:"⚠ Tiyeyo omonto oyorendekania ekwani ky'Ekegusii eintwe — nagoika ElevenLabs. Ekwani kiao gekokorwa nigo English na Kiswahili konyene; Ekegusii negosigara buna endikwa.",
+    elevenlabs_key_label:"Ufunguo wa API ya ElevenLabs", elevenlabs_voiceid_label:"Voice ID",
+    elevenlabs_save:"Batia ekwani", elevenlabs_saved:"Ekwani kiabatirwe.", elevenlabs_clear:"Sitia ekwani",
+    voice_clone_test_btn:"Geria ekwani", voice_test_playing:"Nigokora…", elevenlabs_error:"Titaobasire okokora — echore ufunguo wao na Voice ID.",
+    backup_title:"Okobatia na Okogaruria", backup_intro:"Amang'ana onsi — ense, amang'ana y'Ekegusii, na abanto — chibatiirwe rimwana riao rienyene. Batia nakala buna nyanko kore otigokorwa n'ense chiao.",
+    export_btn:"Yaria data yonsi (.json)", import_btn:"Garuria kobwo faili y'okobatia",
+    import_confirm:"Eye negoyongera/gogaruria data ime aria eyariyo. Genderia?",
+    import_success:"Data yagariwe.", import_error:"Titaobasire okosoma faili eyio — echore ende yaretwe kobwo riundu rino.",
+    app_disclaimer:"Ekearo ky'okotebia amabaka — tikio omoreri w'endeni ya DCS kobwo ya bashauri b'amategeko.",
+    tab_research:"Okogenderia n'Amasasisho", research_title:"Okogenderia n'Amasasisho", research_sub:"Tiyeyo ekintu omokuru anyorete ime okogenderia gekogaruria endeni yaye korao otachetera aha.",
+    research_intro:"Omokuru nokobasa okogenderia amang'ana amaya ayerendekana n'omoro gwao — okogaruka kw'Amategeko y'Abana, chama chiyaandikirwe chiya okoresera, taratibu chiagaruwe — korao ekero omomorobirie (file eye tiyabasire okokora enyuma aria otari), na tiyeyo ekintu okonyorete ekikoresibwa korao otachetera aha.",
+    run_research_btn:"Kora okogenderia rero", researching_msg:"Nigosakania…",
+    last_checked_label:"Yagenderirwe ekero:", never_checked:"Titaigwete.",
+    stale_check_prompt:"Ebiro biyaki bindabete — nigo ekero y'okogenderia.",
+    no_new_findings:"Nagenderiirwe — tiyariyo ekintu ekeya ekonyorekane.",
+    pending_findings_title:"Agotebe okoirwa ako", approved_findings_title:"Amasasisho yechetebe",
+    no_pending_findings:"Tiyariyo ekintu igotebe.", no_approved_findings:"Tiyariyo amasasisho yechetebe.",
+    finding_source_label:"Aria:", suggest_label:"Okogaruria okorendekana omokuru",
+    approve_finding_btn:"Chetera", reject_finding_btn:"Aana", forget_finding_btn:"Ribara",
+    research_error:"Titaobasire okogenderia — geria ekero ende.",
+    tab_glossary:"Amang'ana y'Ekegusii", glossary_title:"Amang'ana y'Ekegusii", glossary_sub:"Amang'ana ayio omokuru atari na obokong'u nayo, agotebe okoirwa ako — nagoika ayio wachetebe.",
+    pending_title:"Agotebe okoirwa ako", approved_title:"Amang'ana ayechetebe",
+    no_pending:"Tiyariyo ekintu igotebe.", no_approved:"Tiyariyo amang'ana yechetebe.",
+    approve_btn:"Chetera", reject_btn:"Aana", meaning_label:"Amang'ana ayekong'u",
+    context_label:"Yabonekere ime okoiga:", flagged_note:"Titabwoire obokong'u bw'erigambo rimwe — ndarietire ime Amang'ana y'Ekegusii korao orore.",
+    forget_btn:"Ribara",
+  }
+};
+STR.eg._draft = true; // Ekegusii strings are a first-pass draft — flagged in the UI.
+
+let LANG = "en";
+function t(k){ return (STR[LANG] && STR[LANG][k]) || STR.en[k] || k; }
+
+/* =========================================================
+   FIELD PRECEDENT LIBRARY — this is the single highest-value
+   thing to add. Everything else in this file is procedure
+   and policy; this array is where Joseph's actual field
+   judgement lives, so the agent reasons the way he reasons
+   instead of just reciting the Children Act.
+
+   Add entries as short, anonymised case notes — never a real
+   child's name, never enough detail to identify anyone.
+   Good shape for an entry:
+     "Reported: grandmother caring for two grandchildren after
+      both parents died; no legal guardianship in place. Called
+      it a Custody + Orphaned case, not Neglect — grandmother
+      was coping fine, the gap was purely legal. Recommended
+      guardianship application over adoption since she's family,
+      not a stranger, and it's faster and cheaper for her."
+     "A chief tried to resolve a defilement case at baraza level.
+      Corrected this on the spot — defilement never goes through
+      chief/baraza, it's hospital first, then police, regardless
+      of pressure from the family to 'settle' it locally."
+   Twenty to thirty entries like this, covering the situations
+   that actually come up in Kisii/wherever the officer works,
+   will do more for realism than any amount of extra legal text.
+   ========================================================= */
+const FIELD_PRECEDENTS = [
+  "Accomplice liability isn't limited to family: when a government office or officer with a duty to help in a case — chief, assistant chief, children's officer, police officer, or other responsible agency — takes part in hosting or facilitating a kangaroo court to stop a case reaching daylight, they can be charged as accomplices, same as anyone else. Real arrests have happened of parents, uncles, and other relatives for participating in suppression and compromising evidence in child cases.",
+  "Even when evidence has been deliberately interfered with as part of a suppression attempt, the case is not dead — a child's testimony alone is enough for the law to allow the case to proceed.",
+];
+
+/* =========================================================
+   SYSTEM PROMPT for the live consult chat
+   ========================================================= */
+const SYSTEM_PROMPT = `You are J.M_CP Specialist, an AI assistant supporting a Kenyan Children's Officer (Directorate of Children's Services) with day-to-day child protection casework. You are speaking directly with the officer, not with the public.
+
+WHAT COUNTS AS A CASE: Per the Directorate of Children's Services' working definition and the Children Act 2022, a case is anything involving a child that needs to be sorted out — resolved — so that the child is able to resume normal life. This is the frame to reason from: don't wait for something to fit a narrow textbook definition of abuse before treating it as worth attention. If a child's normal life is disrupted and the situation needs resolving, it's a case, whatever category it eventually gets classified under.
+
+VOICE: Speak with calm, grounded authority — the clarity of someone who explains law and procedure precisely, paired with pastoral warmth and encouragement, and firm moral clarity about protecting children. Never flowery. Never generic-chatbot. Sign off only when it feels natural, not every message.
+
+LANGUAGE: Respond entirely in the language requested for this turn (English, Kiswahili, or Ekegusii). If asked to answer in Ekegusii, do your best fluent effort but add one short parenthetical note that the Ekegusii should be checked by a fluent speaker before official use, since your Ekegusii is less reliable than your English or Kiswahili.
+
+EKEGUSII VOCABULARY GAPS: When replying in Ekegusii and you are genuinely unsure of the correct word or phrase for a specific term (a legal/procedural term especially — "guardianship", "referral letter", "sub-county", etc.), do not silently guess and move on. First, still give your best-effort answer in the visible text using your best guess so the officer gets a usable reply immediately. Then, on new lines at the very end of your reply, after everything else, append one marker per uncertain term using EXACTLY this format and nothing else on those lines:
+[[EG_UNSURE|term=<the Ekegusii word or phrase you were unsure of>|guess=<your best-effort meaning or translation, in English>]]
+Only do this for genuine uncertainty about a specific term — not for ordinary sentence construction you're confident about, and not more than 2-3 times per reply. Never mention or explain this marker in the visible part of your answer; it is parsed out by the app, not seen by the officer as-is.
+
+IMMEDIATE SAFETY: If a message describes a child in immediate danger (ongoing abuse, a child who has just been assaulted, an active abduction, a medical emergency), your FIRST line must direct them to call 116 (Kenya's National Child Helpline, free, toll-free, 24/7) or the nearest police station immediately — before anything else, even if they didn't ask for that.
+
+REPORTING PROCEDURE (field-tested, use this as your default guidance):
+- General/neglect/custody-type cases: first point of contact is the local administration — assistant chief or chief — who summons both parties to discuss and attempt cooperation on caring for the child. If unresolved, the chief refers the case to the sub-county children's office with a referral letter. If the chief is unreachable, report to police, or the hospital if medical attention is needed.
+- Defilement / sexual abuse — urgent, distinct pathway: first point is the Ministry of Health/hospital for treatment and specimen/evidence documentation (P3/PRC forms). Police should accompany the victim to hospital and record statements; if police are unreachable, the children's office is the fallback. After treatment, the victim formally reports to police with the hospital forms. Once police gather sufficient evidence, the file goes to the DCI, which decides on charging. Avoid involving media at this stage — it can tip off perpetrators and let them flee before arrest.
+
+LEGAL POINTS TO SURFACE WHEN RELEVANT:
+- Accomplice liability in suppressed cases is broader than just parents: it extends to ANY government office or officer with a duty to help — chief, assistant chief, children's officer, police officer, or any other responsible agency — if they take part in perpetrating, hosting, or facilitating a kangaroo court that keeps a case from ever coming to light. This is not theoretical — arrests of parents, uncles, and other relatives have happened in real cases for participating in suppression and compromising evidence.
+- Child sexual abuse cases do not expire under Kenyan law — delay in reporting is not a bar to pursuing a case.
+- A child's own testimony is strong evidence on its own — the law allows a case to proceed on the child's testimony even where physical evidence is unavailable or was interfered with (including where evidence was deliberately compromised as part of a suppression attempt).
+- Informal, non-legal placements of children (e.g. someone "given" a child outside any legal framework) leave the child unprotected if the caregiver dies — always direct people toward a recognised legal framework instead: adoption, guardianship, foster care, kinship care, or Kafaalah.
+
+ADOPTION (Children Act 2022, Part XIV, Sec 183–204; Children (Adoption Proceedings) Rules 2023):
+- Types: local, kinship, foreign, inter-country (highly regulated, often needs Moratorium Committee clearance).
+- Child must be declared "free for adoption" by NCCS.
+- Applicants: aged 25–65, at least 21 years older than the child, sound mind, financially stable, good moral standing — age rule waived for biological parents.
+- Process: free-for-adoption declaration → placement via a LICENSED adoption society only → 3 months' continuous care → High Court application → in-chambers hearing → consent considered (child's own if 10+) → Adoption Order.
+- NEVER suggest or normalise a private/direct placement outside a licensed adoption society — this is how trafficking gets disguised as adoption.
+- NEVER give a specific eligibility ruling for an individual case, and NEVER promise timelines. Direct case-specific questions to NCCS, a licensed adoption society, or a lawyer.
+
+CPIMS CASE CATEGORIES (38, official): Abandoned, Abduction, Custody, Physical abuse/violence, Registration, Children on the Street, Child labour, Child of imprisoned/detained parent(s), Sexual exploitation and abuse, Child Trafficking, Parental Child Abduction, Child infected with HIV, Child in conflict with the law, Defilement, Child with disability, Drug and substance abuse, Child Pregnancy, Child marriage, Emotional abuse, Harmful cultural practices, Female Genital Mutilation, Incest, Disinheritance/succession, Internally Displaced Child, Missing Child, Neglect, Online Child Abuse, Orphaned, Refugee child, Sexual assault, Child Truancy, Unlawful confinement, Child offer, Child out of school, Sick child (chronic illness), Child headed household, Child radicalization, Forced Male Circumcision. Use these exact category names when helping classify a case.
+
+INTERVENTIONS you can reference as possible outcomes (never guarantee one for a specific case): Adoption, committal to a CCI (place of safety), committal to a statutory institution, professional counselling, family support, foster care, guardianship, parental responsibility agreement, judicial orders, legal aid, child maintenance, school placement/enrolment, reunification, reconciliation, referral to court/Khadhi, referral to other government or non-state agencies, reintegration, repatriation, release to parents/caregivers, rescue and placement, supervision and guidance order, diversion, written promise, revocation/release on expiry/license of a committal order, committal to a fit person, kinship care, supported child-headed household, supported independent living, Kafaalah.
+
+CARE REFORM & GATEKEEPING — Sub-County Care Reform Committee (CRC), from official DCS training materials. This governs every decision about removing a child from family or placing them in alternative care.
+
+Gatekeeping = the system of policies, procedures, and multidisciplinary decision-making that ensures alternative care is used only when absolutely necessary, and that whatever care is used is the most suitable fit for that child. Think of it as gates that should stay closed by default, opened only after rigorous assessment — not a one-time event but a continuous process of referral, assessment, planning, implementation, and review. The CRC is Kenya's formal gatekeeping mechanism.
+
+Core principles governing every placement/removal decision, in order of weight:
+- Best Interest of the Child (BIOTC) — paramount, the determining factor above all other considerations (Constitution Art. 53, UNCRC Art. 3).
+- Necessity — alternative care is only justified once all options to keep the child safely with family have been exhausted, or where significant harm has already happened or is imminent. Poverty alone is never sufficient justification for removal. Reassess necessity on an ongoing basis — a placement that was necessary six months ago may not be now.
+- Suitability — once removal is deemed necessary, the specific placement chosen must actually fit that child's needs (age, disability, trauma history, siblings, culture/religion) — not just the nearest available option. Also reassessed over time.
+- Primacy of family-based care — family and community-based options (kinship care, foster care, guardianship, supported independent living, Kafaalah) are always prioritised over institutional/residential care.
+- Child participation — children have the right to express views on their own care and be heard, appropriate to their evolving capacity. This does NOT mean the child chooses where they live — it means their view is a genuine input into the decision.
+- Do No Harm — procedural safeguards throughout; avoid unintended harm from the process itself.
+
+Residential care (CCIs, rescue centres, rehabilitation schools, remand homes, emergency shelters) is the last resort, not a default: children under 3 must never be placed in residential care under any circumstances — family-based only. Any residential placement needs a social inquiry report justifying why family/community-based options were not suitable, presented to court alongside the Committal Order request. An exit strategy toward reintegration must be part of the plan from the start, not an afterthought, and the same CRC that approved the placement must review it every three months to check it's still necessary and suitable.
+
+CRC composition: Deputy County Commissioner (Chair), Sub-county Children's Officer (Secretary), police representative, Ministry of Health rep, civil society rep working in alternative family care, a care leaver representative, judiciary rep (ideally a Children's Court Magistrate), plus co-opted members as needed (e.g. NCPWD rep for a disability case).
+
+Bringing a case to CRC: caseworker presents to the SCCO within three months of identifying the child; SCCO checks the case file for completeness before it goes on the meeting agenda (in 2019, a Kisumu sample found only 6% of case files were complete — file completeness is a real, common failure point worth flagging). Case management follows 8 steps: Identification → Child Assessment → Family tracing/assessment → Case plan development → Implementation (prepare/strengthen child & family) → Placement/reunification → Monitoring & case review → Case closure (sustainable reintegration).
+
+Reunification specifically: requires a signed Reunification Form (parent(s), caseworker, SCCO all sign, confirming everyone understands and commits to the conditions). If the child has an existing Committal Order to another care setting, the SCCO must apply to court to revoke it as part of reunification.
+
+If parties disagree with a CRC decision: they can request a review from the SCCO within 14 days, providing any new information; CRC reviews at its next meeting and responds in writing with the rationale. If still unsatisfied, they can appeal to the county CRC/Area Advisory Council (AAC) within 21 days.
+
+Documentation: every decision's rationale and the weight given to each factor must be recorded in writing. Each child needs their own Placement Form even where siblings are placed together. Data goes into CPIMS; records retained per the Records Disposal Act 2012; CRC reports quarterly to the AAC.
+
+BOUNDARIES: You inform, triage, and guide — you do not replace the officer's judgement, do not issue legal rulings, and do not promise outcomes or timelines. Keep answers focused and practical; this is a working tool for someone mid-casework, not a lecture.
+
+FIELD PRECEDENT LIBRARY (the officer's own past cases and judgement calls — reason from these the same way the officer would, don't just recite policy):
+${FIELD_PRECEDENTS.length ? FIELD_PRECEDENTS.map((p,i)=>`${i+1}. ${p}`).join("\n") : "(none added yet — see the note in the code comments above FIELD_PRECEDENTS for how to add real, anonymised examples of past cases, judgement calls, and local pathway details.)"}`;
+
+/* =========================================================
+   API call
+   ========================================================= */
+function glossaryPromptBlock(){
+  if(!ekegusiiGlossary.length) return "";
+  return "\n\nCONFIRMED EKEGUSII GLOSSARY (the officer has approved these — use them exactly, don't re-guess):\n"
+    + ekegusiiGlossary.map(g => `- ${g.term}: ${g.meaning}`).join("\n");
+}
+
+async function callAgent(userText, langLabel){
+  // Three modes, tried in order of what's actually available:
+  // 1. Inside Claude — Claude's own proxy handles auth, no key needed.
+  // 2. Standalone with a personal API key — call Anthropic directly.
+  // 3. Standalone with NO personal key — try this server's own /api/chat
+  //    proxy (only exists/works if this file is being served by
+  //    server.js from its public/ folder, same origin — that's what
+  //    makes a public deployment usable by visitors with no key of
+  //    their own at all; the officer's server key pays for it).
+  const key = getStoredApiKey();
+
+  if(RUNNING_STANDALONE && !key){
+    try{
+      const res = await fetch("/api/chat", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({ message: userText, lang: LANG })
+      });
+      if(res.ok){
+        const data = await res.json();
+        return data.reply || "…";
+      }
+      if(res.status === 429){
+        const data = await res.json().catch(()=>({}));
+        return data.message || "Too many messages — please wait a bit and try again.";
+      }
+      // Any other status (likely 404 — no backend configured here) falls
+      // through to the direct-Anthropic attempt below, which surfaces the
+      // normal "add your own key" guidance.
+    }catch(e){ /* no backend reachable at this origin — fall through */ }
+  }
+
+  const headers = { "Content-Type":"application/json" };
+  if(key){
+    headers["x-api-key"] = key;
+    headers["anthropic-version"] = "2023-06-01";
+    headers["anthropic-dangerous-direct-browser-access"] = "true";
+  }
+  const res = await fetch("https://api.anthropic.com/v1/messages", {
+    method:"POST",
+    headers,
+    body: JSON.stringify({
+      model: "claude-sonnet-4-6",
+      max_tokens: 900,
+      system: SYSTEM_PROMPT + glossaryPromptBlock() + researchPromptBlock(),
+      messages: [
+        { role:"user", content: `[Respond in: ${langLabel}]\n\n${userText}` }
+      ]
+    })
+  });
+  const data = await res.json();
+  const text = (data.content || []).filter(b=>b.type==="text").map(b=>b.text).join("\n");
+  return text || "…";
+}
+
+const LANG_LABEL = {en:"English", sw:"Kiswahili", eg:"Ekegusii"};
+
+/* =========================================================
+   EMERGENCY CONTACTS & ACTIONS
+   Stored privately on-device (window.storage, shared:false).
+   No auto-dialling or silent emailing happens — a mailto:
+   link opens the officer's own mail app pre-filled, ready to
+   send in one tap; tel: links do the same for calls. Nothing
+   fires without the officer's own tap.
+   ========================================================= */
+const EMPTY_CONTACTS = { chiefName:"", chiefPhone:"", asstChiefName:"", asstChiefPhone:"",
+  policeName:"", policePhone:"", subCountyName:"", subCountyPhone:"", notifyEmail:"" };
+let emergencyContacts = { ...EMPTY_CONTACTS };
+
+async function loadEmergencyContacts(){
+  try{
+    const r = await window.storage.get("emergency_contacts", false);
+    if(r && r.value) emergencyContacts = { ...EMPTY_CONTACTS, ...JSON.parse(r.value) };
+  }catch(e){ /* nothing saved yet */ }
+}
+
+function buildEmergencyActionsHTML(contextSummary){
+  const c = emergencyContacts;
+  const contacts = [
+    [t("call_chief"), c.chiefName, c.chiefPhone],
+    [t("call_asstchief"), c.asstChiefName, c.asstChiefPhone],
+    [t("call_police"), c.policeName, c.policePhone],
+    [t("call_subcounty"), c.subCountyName, c.subCountyPhone],
+  ].filter(([,,phone]) => phone);
+
+  const callBtns = contacts.map(([label,name,phone]) =>
+    `<a class="em-call-btn" href="tel:${phone}">📞 ${label}${name?` — ${name}`:""}</a>`
+  ).join("");
+  const helplineBtn = `<a class="em-call-btn em-116" href="tel:116">📞 ${t("call_116")}</a>`;
+
+  const mailBtn = c.notifyEmail
+    ? `<a class="em-call-btn em-mail" href="mailto:${c.notifyEmail}?subject=${encodeURIComponent("EMERGENCY — Child Protection Case")}&body=${encodeURIComponent(contextSummary)}">✉️ ${t("send_emergency_email")}</a>`
+    : "";
+
+  return `<div class="em-panel">
+    <div class="em-title">⚑ ${t("emergency_actions")}</div>
+    <div class="em-btns">${callBtns}${helplineBtn}</div>
+    ${mailBtn ? `<div class="em-btns">${mailBtn}</div>` : `<div class="em-hint">${t("no_email_set")}</div>`}
+  </div>`;
+}
+
+/* =========================================================
+   EKEGUSII GLOSSARY — approval-gated learning.
+   The model is instructed (see SYSTEM_PROMPT) to flag genuine
+   uncertainty about an Ekegusii term with a marker at the end
+   of its reply. Flagged terms land here as PENDING and are
+   never used again until the officer approves (with an
+   editable meaning) or rejects them. Only approved entries are
+   fed back into future prompts via glossaryPromptBlock().
+   ========================================================= */
+let ekegusiiGlossary = []; // approved: [{term, meaning, approvedAt}]
+
+async function loadGlossary(){
+  try{
+    const r = await window.storage.get("ekegusii_glossary", false);
+    if(r && r.value) ekegusiiGlossary = JSON.parse(r.value);
+  }catch(e){ /* nothing saved yet */ }
+}
+async function saveGlossary(){
+  await window.storage.set("ekegusii_glossary", JSON.stringify(ekegusiiGlossary), false);
+}
+
+function extractUnsureMarkers(text){
+  const re = /\[\[EG_UNSURE\|term=([^|]+)\|guess=([^\]]+)\]\]/g;
+  const items = [];
+  let m;
+  while((m = re.exec(text)) !== null){
+    items.push({ term: m[1].trim(), guess: m[2].trim() });
+  }
+  const cleanText = text.replace(re, "").trim();
+  return { cleanText, items };
+}
+
+async function savePendingSuggestion(term, guess, context){
+  const key = "eg_pending_" + Date.now() + "_" + Math.random().toString(36).slice(2,7);
+  await window.storage.set(key, JSON.stringify({ term, guess, context, createdAt: new Date().toISOString() }), false);
+}
+
+async function refreshGlossaryBadge(){
+  let count = 0;
+  try{
+    const listed = await window.storage.list("eg_pending_", false);
+    count = ((listed && listed.keys) || []).length;
+  }catch(e){}
+  const badge = document.getElementById("glossaryCount");
+  if(count>0){ badge.textContent = count; badge.classList.remove("hide"); } else badge.classList.add("hide");
+}
+
+/* =========================================================
+   RESEARCH & SELF-IMPROVEMENT — approval-gated, same trust
+   model as the Ekegusii glossary. "Periodically" is honest
+   here about what a static HTML file can actually do: there
+   is no background process, so research runs when the officer
+   taps the button (the Research tab nudges if it's been a
+   while). A real scheduled version — e.g. a weekly automatic
+   check emailing a digest — belongs in the WhatsApp backend
+   (server.js), not this file.
+
+   Findings never change agent behaviour on their own: the
+   model is asked to report candidate findings in a fixed
+   marker format, which is parsed out and stored as PENDING —
+   unused — until the officer approves (with an editable
+   "what should change" note) or rejects it. Only approved
+   entries are fed back into future chat calls.
+   ========================================================= */
+let approvedResearch = []; // [{title, summary, source, suggestion, approvedAt}]
+
+async function loadResearch(){
+  try{
+    const r = await window.storage.get("research_findings", false);
+    if(r && r.value) approvedResearch = JSON.parse(r.value);
+  }catch(e){ /* nothing saved yet */ }
+}
+async function saveResearch(){
+  await window.storage.set("research_findings", JSON.stringify(approvedResearch), false);
+}
+
+function researchPromptBlock(){
+  if(!approvedResearch.length) return "";
+  return "\n\nOFFICER-APPROVED RECENT UPDATES (confirmed current — use these, don't contradict them):\n"
+    + approvedResearch.map(f => `- ${f.title}: ${f.suggestion}`).join("\n");
+}
+
+function extractFindingMarkers(text){
+  const re = /\[\[FINDING\|title=([^|]+)\|summary=([^|]+)\|source=([^|]+)\|suggest=([^\]]+)\]\]/g;
+  const items = [];
+  let m;
+  while((m = re.exec(text)) !== null){
+    items.push({ title:m[1].trim(), summary:m[2].trim(), source:m[3].trim(), suggestion:m[4].trim() });
+  }
+  return items;
+}
+
+async function getLastChecked(){
+  try{
+    const r = await window.storage.get("research_last_checked", false);
+    return r && r.value ? r.value : null;
+  }catch(e){ return null; }
+}
+async function setLastChecked(){
+  await window.storage.set("research_last_checked", new Date().toISOString(), false);
+}
+
+async function runResearch(){
+  const btn = document.getElementById("runResearchBtn");
+  const msgEl = document.getElementById("researchMsg");
+  if(btn) btn.disabled = true;
+  if(msgEl){ msgEl.textContent = t("researching_msg"); msgEl.style.color = "var(--ink-soft)"; }
+
+  const key = getStoredApiKey();
+  const headers = { "Content-Type":"application/json" };
+  if(key){
+    headers["x-api-key"] = key;
+    headers["anthropic-version"] = "2023-06-01";
+    headers["anthropic-dangerous-direct-browser-access"] = "true";
+  }
+
+  const prompt = `Search for recent developments relevant to Kenyan child protection casework — specifically: amendments to the Children Act 2022, newly NCCS-licensed adoption societies, changes to CPIMS case categories or definitions, updated NCAJ/SGBV court-users'-committee procedures, National Child Helpline (116) changes, or new Directorate of Children's Services circulars or guidance. Only report things that look genuinely new or changed, not general background you already knew.
+
+For each finding, respond using ONLY this exact format, one block per finding, nothing else surrounding it:
+[[FINDING|title=<short title>|summary=<one or two sentence summary>|source=<the URL>|suggest=<one sentence: what should change in the agent's guidance because of this>]]
+
+If a genuine URL isn't available for a finding, don't include that finding at all — no source means it doesn't get reported.
+If nothing new or relevant turns up, respond with exactly: NO_NEW_FINDINGS`;
+
+  try{
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method:"POST",
+      headers,
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: 1200,
+        tools: [{ type:"web_search_20250305", name:"web_search" }],
+        messages: [{ role:"user", content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const text = (data.content || []).filter(b=>b.type==="text").map(b=>b.text).join("\n");
+    const findings = extractFindingMarkers(text);
+
+    for(const f of findings){
+      const pkey = "research_pending_" + Date.now() + "_" + Math.random().toString(36).slice(2,7);
+      await window.storage.set(pkey, JSON.stringify({ ...f, createdAt: new Date().toISOString() }), false);
+    }
+    await setLastChecked();
+    if(msgEl){
+      msgEl.textContent = findings.length ? "" : t("no_new_findings");
+      msgEl.style.color = "var(--ink-soft)";
+    }
+    refreshResearchBadge();
+    renderResearch();
+  }catch(e){
+    if(msgEl){ msgEl.textContent = t("research_error"); msgEl.style.color = "var(--red)"; }
+    if(btn) btn.disabled = false;
+  }
+}
+
+async function refreshResearchBadge(){
+  let count = 0;
+  try{
+    const listed = await window.storage.list("research_pending_", false);
+    count = ((listed && listed.keys) || []).length;
+  }catch(e){}
+  const badge = document.getElementById("researchCount");
+  if(count>0){ badge.textContent = count; badge.classList.remove("hide"); } else badge.classList.add("hide");
+}
+
+async function renderResearch(){
+  const wrap = document.getElementById("researchWrap");
+  wrap.innerHTML = `<div class="empty">${t("thinking")}</div>`;
+
+  const lastChecked = await getLastChecked();
+  let pendingKeys = [];
+  try{
+    const listed = await window.storage.list("research_pending_", false);
+    pendingKeys = (listed && listed.keys) || [];
+  }catch(e){}
+  const pending = [];
+  for(const k of pendingKeys){
+    try{
+      const r = await window.storage.get(k, false);
+      if(r && r.value) pending.push({ key:k, ...JSON.parse(r.value) });
+    }catch(e){}
+  }
+  pending.sort((a,b)=> (b.createdAt||"").localeCompare(a.createdAt||""));
+
+  const daysSince = lastChecked ? Math.floor((Date.now() - new Date(lastChecked).getTime()) / 86400000) : null;
+  const stale = daysSince === null || daysSince >= 14;
+
+  const pendingHtml = pending.length ? pending.map(f => `
+    <div class="gloss-card pending">
+      <div class="gloss-term">${f.title}</div>
+      <div class="gloss-context">${f.summary}</div>
+      <div class="gloss-context">${t("finding_source_label")} <a href="${f.source}" target="_blank" rel="noopener">${f.source}</a></div>
+      <div class="gloss-meaning-row">
+        <label style="font-size:12px; color:var(--ink-soft); flex:0 0 auto;">${t("suggest_label")}:</label>
+        <input id="suggest_${f.key}" value="${(f.suggestion||"").replace(/"/g,'&quot;')}">
+      </div>
+      <div class="gloss-actions">
+        <button class="gloss-approve" onclick="approveResearchFinding('${f.key}', '${f.title.replace(/'/g,"\\'")}', '${(f.source||"").replace(/'/g,"\\'")}')">${t("approve_finding_btn")}</button>
+        <button class="gloss-reject" onclick="rejectResearchFinding('${f.key}')">${t("reject_finding_btn")}</button>
+      </div>
+    </div>`).join("") : `<div class="empty">${t("no_pending_findings")}</div>`;
+
+  const approvedHtml = approvedResearch.length ? approvedResearch.map((f,i) => `
+    <div class="gloss-approved-row">
+      <span class="term">${f.title}</span>
+      <span class="meaning">${f.suggestion}</span>
+      <button onclick="forgetResearchFinding(${i})">${t("forget_finding_btn")}</button>
+    </div>`).join("") : `<div class="empty">${t("no_approved_findings")}</div>`;
+
+  wrap.innerHTML = `
+    <div class="wiz" style="max-width:640px;">
+      <p class="setup-intro">${t("research_intro")}</p>
+      <div class="section">
+        <div class="body">
+          <div style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">
+            ${t("last_checked_label")} ${lastChecked ? new Date(lastChecked).toLocaleString() : t("never_checked")}
+            ${stale ? `<br><span style="color:var(--ochre); font-weight:600;">⚠ ${t("stale_check_prompt")}</span>` : ""}
+          </div>
+          <div class="submitbar">
+            <button class="primary-btn" id="runResearchBtn">${t("run_research_btn")}</button>
+            <span id="researchMsg" style="font-size:12.5px;"></span>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <h3>${t("pending_findings_title")}</h3>
+        <div class="body">${pendingHtml}</div>
+      </div>
+      <div class="section">
+        <h3>${t("approved_findings_title")}</h3>
+        <div class="body">${approvedHtml}</div>
+      </div>
+    </div>
+  `;
+  document.getElementById("runResearchBtn").addEventListener("click", runResearch);
+}
+
+async function approveResearchFinding(key, title, source){
+  const input = document.getElementById("suggest_" + key);
+  const suggestion = input ? input.value.trim() : "";
+  if(!suggestion) return;
+  let summary = "";
+  try{
+    const r = await window.storage.get(key, false);
+    if(r && r.value) summary = JSON.parse(r.value).summary || "";
+  }catch(e){}
+  approvedResearch.push({ title, summary, source, suggestion, approvedAt: new Date().toISOString() });
+  await saveResearch();
+  await window.storage.delete(key, false);
+  refreshResearchBadge();
+  renderResearch();
+}
+async function rejectResearchFinding(key){
+  await window.storage.delete(key, false);
+  refreshResearchBadge();
+  renderResearch();
+}
+async function forgetResearchFinding(index){
+  approvedResearch.splice(index, 1);
+  await saveResearch();
+  renderResearch();
+}
+window.approveResearchFinding = approveResearchFinding;
+window.rejectResearchFinding = rejectResearchFinding;
+window.forgetResearchFinding = forgetResearchFinding;
+
+/* =========================================================
+   BACKUP & RESTORE
+   Everything lives in one browser/device (Claude's storage,
+   or the localStorage fallback). Export bundles it all into
+   one JSON file the officer keeps somewhere safe; Import
+   reads that file back in, key by key, on top of whatever's
+   already there.
+   ========================================================= */
+async function collectAllData(){
+  const cases = [];
+  try{
+    const listed = await window.storage.list("case_", false);
+    for(const k of (listed && listed.keys) || []){
+      try{ const r = await window.storage.get(k, false); if(r && r.value) cases.push(JSON.parse(r.value)); }catch(e){}
+    }
+  }catch(e){}
+
+  const pendingGlossary = [];
+  try{
+    const listed = await window.storage.list("eg_pending_", false);
+    for(const k of (listed && listed.keys) || []){
+      try{ const r = await window.storage.get(k, false); if(r && r.value) pendingGlossary.push({ key:k, ...JSON.parse(r.value) }); }catch(e){}
+    }
+  }catch(e){}
+
+  const pendingResearch = [];
+  try{
+    const listed = await window.storage.list("research_pending_", false);
+    for(const k of (listed && listed.keys) || []){
+      try{ const r = await window.storage.get(k, false); if(r && r.value) pendingResearch.push({ key:k, ...JSON.parse(r.value) }); }catch(e){}
+    }
+  }catch(e){}
+
+  return {
+    exportedAt: new Date().toISOString(),
+    app: "J.M_CP Specialist",
+    version: 1,
+    cases,
+    emergencyContacts,
+    approvedGlossary: ekegusiiGlossary,
+    pendingGlossary,
+    approvedResearch,
+    pendingResearch,
+  };
+}
+
+async function exportAllData(){
+  const data = await collectAllData();
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const dateStr = new Date().toISOString().slice(0,10);
+  a.href = url;
+  a.download = `jm_cp_specialist_backup_${dateStr}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+async function importAllDataFromFile(file){
+  const msgEl = document.getElementById("backupMsg");
+  try{
+    const text = await file.text();
+    const data = JSON.parse(text);
+    if(!data || typeof data !== "object" || !("app" in data)){
+      msgEl.textContent = t("import_error");
+      msgEl.style.color = "var(--red)";
+      return;
+    }
+    if(!confirm(t("import_confirm"))) return;
+
+    for(const c of (data.cases || [])){
+      if(c && c.id) await window.storage.set(c.id, JSON.stringify(c), false);
+    }
+    if(data.emergencyContacts){
+      emergencyContacts = { ...EMPTY_CONTACTS, ...data.emergencyContacts };
+      await window.storage.set("emergency_contacts", JSON.stringify(emergencyContacts), false);
+    }
+    if(Array.isArray(data.approvedGlossary)){
+      ekegusiiGlossary = data.approvedGlossary;
+      await saveGlossary();
+    }
+    for(const p of (data.pendingGlossary || [])){
+      if(p && p.key){ const { key, ...rest } = p; await window.storage.set(key, JSON.stringify(rest), false); }
+    }
+    if(Array.isArray(data.approvedResearch)){
+      approvedResearch = data.approvedResearch;
+      await saveResearch();
+    }
+    for(const p of (data.pendingResearch || [])){
+      if(p && p.key){ const { key, ...rest } = p; await window.storage.set(key, JSON.stringify(rest), false); }
+    }
+
+    msgEl.textContent = t("import_success");
+    msgEl.style.color = "var(--forest)";
+    refreshCaseLog();
+    refreshGlossaryBadge();
+    refreshResearchBadge();
+    renderSetup();
+  }catch(e){
+    msgEl.textContent = t("import_error");
+    msgEl.style.color = "var(--red)";
+  }
+}
+
+/* =========================================================
+   CHAT PANEL
+   ========================================================= */
+const chatlog = document.getElementById("chatlog");
+let chatHistory = [];
+
+function addMsg(role, text){
+  const div = document.createElement("div");
+  div.className = "msg " + role;
+  div.textContent = text;
+  chatlog.appendChild(div);
+  chatlog.scrollTop = chatlog.scrollHeight;
+  return div;
+}
+
+function addHTMLMsg(role, html){
+  const div = document.createElement("div");
+  div.className = "msg " + role;
+  div.innerHTML = html;
+  chatlog.appendChild(div);
+  chatlog.scrollTop = chatlog.scrollHeight;
+  return div;
+}
+
+function greet(){
+  chatlog.innerHTML = "";
+  addMsg("agent", t("greeting"));
+  updateVoiceAvailability();
+}
+
+const HIGH_RISK_WORDS = ["defilement","rape","assault","trafficking","abduct","fgm","mutilation",
+  "forced marriage","child marriage","incest","radicaliz","confinement","missing child","overdose","suicid",
+  "in danger now","being beaten","locked in","won't stop","happening now",
+  "abandon","dumped","newborn","kutupwa","kuachwa","kichakani"];
+
+async function sendChat(){
+  const input = document.getElementById("chatInput");
+  const val = input.value.trim();
+  if(!val) return;
+  addMsg("user", val);
+  input.value = "";
+  input.style.height = "auto";
+  const flagged = HIGH_RISK_WORDS.some(w => val.toLowerCase().includes(w));
+  if(flagged){
+    addMsg("flag", "⚑ " + (LANG==="sw" ? "Hii inaonekana ni hatari kubwa. Ikiwa mtoto yuko hatarini sasa hivi, piga 116 au polisi kabla ya kuendelea."
+      : LANG==="eg" ? "⚑ Amang'ana aya nigo amabaka mono. Omwana ari amabakang'ani, hamba 116 kobwo endabo."
+      : "This reads as high-risk. If the child is in danger right now, call 116 or the nearest police station before doing anything else."));
+    addHTMLMsg("agent", buildEmergencyActionsHTML(
+      `EMERGENCY reported via J.M_CP Specialist chat (${LANG_LABEL[LANG]}):\n\n${val}\n\nTime: ${new Date().toLocaleString()}`
+    ));
+  }
+  const btn = document.getElementById("sendBtn");
+  btn.disabled = true;
+  const thinking = addMsg("system", t("thinking"));
+  try{
+    const reply = await callAgent(val, LANG_LABEL[LANG]);
+    thinking.remove();
+    const { cleanText, items } = extractUnsureMarkers(reply);
+    addMsg("agent", cleanText);
+    speak(cleanText);
+    if(items.length){
+      for(const item of items){ await savePendingSuggestion(item.term, item.guess, val); }
+      addMsg("system", "🔤 " + t("flagged_note"));
+      refreshGlossaryBadge();
+    }
+  }catch(e){
+    thinking.remove();
+    addMsg("system", RUNNING_STANDALONE && !getStoredApiKey()
+      ? (LANG==="sw" ? "Hitilafu ya muunganisho — ukiwa unafungua faili hii nje ya Claude, mazungumzo yanahitaji ufunguo wako wa API. Ongeza mmoja kwenye Mipangilio ya Dharura → Muunganisho."
+        : LANG==="eg" ? "Amabaka y'okotwarana — ekero oigwete file eye aria itari Claude, okoiga gokoenderia ufunguo wao wa API. Yongera ime Amang'ana y'Amabaka → Okotwarana."
+        : "Connection error — since this file is running outside Claude, live chat needs your own Anthropic API key. Add one under Emergency Setup → Connection.")
+      : "Connection error — please try again.");
+  }
+  btn.disabled = false;
+}
+
+document.getElementById("sendBtn").addEventListener("click", sendChat);
+document.getElementById("chatInput").addEventListener("keydown", (e)=>{
+  if(e.key === "Enter" && !e.shiftKey){ e.preventDefault(); sendChat(); }
+});
+document.getElementById("chatInput").addEventListener("input", function(){
+  this.style.height = "auto"; this.style.height = Math.min(this.scrollHeight, 120) + "px";
+});
+
+/* =========================================================
+   VOICE — browser speech recognition (input), plus speech
+   output that uses the officer's own cloned voice (ElevenLabs)
+   when configured, falling back to the browser's generic voice
+   otherwise. English and Kiswahili are both genuinely supported
+   for cloned-voice output — ElevenLabs' v3 model added Swahili.
+   Ekegusii has NO text-to-speech provider anywhere, ElevenLabs
+   included — that's a real gap in what exists, not a build
+   choice, so it stays text-only.
+   ========================================================= */
+const SPEECH_LANG = { en:"en-KE", sw:"sw-KE", eg:null };
+const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+let voiceRepliesOn = false;
+let recognizer = null;
+let currentAudio = null;
+
+function getElevenLabsConfig(){
+  return {
+    apiKey: localStorage.getItem("jmcp_el_key") || "",
+    voiceId: localStorage.getItem("jmcp_el_voice") || "",
+  };
+}
+function setElevenLabsConfig(apiKey, voiceId){
+  if(apiKey) localStorage.setItem("jmcp_el_key", apiKey); else localStorage.removeItem("jmcp_el_key");
+  if(voiceId) localStorage.setItem("jmcp_el_voice", voiceId); else localStorage.removeItem("jmcp_el_voice");
+}
+function hasClonedVoice(){
+  const c = getElevenLabsConfig();
+  return !!(c.apiKey && c.voiceId);
+}
+
+function voiceNote(text){
+  const el = document.getElementById("voiceNote");
+  if(!text){ el.classList.add("hide"); el.textContent=""; return; }
+  el.textContent = text; el.classList.remove("hide");
+}
+
+function updateVoiceAvailability(){
+  const micBtn = document.getElementById("micBtn");
+  const toggle = document.getElementById("voiceToggle");
+  if(LANG === "eg"){
+    // No device or provider anywhere ships an Ekegusii speech model —
+    // recognition and synthesis both. As a best-effort, mic input runs on
+    // the closest available Bantu-language recognizer (Kiswahili) and
+    // drops the (likely inaccurate) transcript into the box for you to
+    // fix before sending — it does NOT auto-send. Spoken replies stay off
+    // entirely: a wrong-language voice reading Ekegusii words aloud would
+    // be more misleading than no voice at all.
+    micBtn.disabled = !SpeechRec;
+    toggle.disabled = true;
+    voiceNote(SpeechRec
+      ? "No provider anywhere supports real Ekegusii speech yet (recognition or spoken replies, cloned voice included). Tap the mic and speak — it'll attempt a rough transcript using the nearest available language, dropped into the box for you to correct before sending."
+      : "Voice isn't supported in this browser — try Chrome on Android/desktop.");
+  } else if(!SpeechRec && !window.speechSynthesis && !hasClonedVoice()){
+    micBtn.disabled = true; toggle.disabled = true;
+    voiceNote("Voice isn't supported in this browser — try Chrome on Android/desktop.");
+  } else {
+    micBtn.disabled = !SpeechRec;
+    toggle.disabled = !(window.speechSynthesis || hasClonedVoice());
+    voiceNote(hasClonedVoice() ? "🎙️ Spoken replies use your cloned voice." : "");
+  }
+}
+
+document.getElementById("micBtn").addEventListener("click", () => {
+  if(!SpeechRec) return;
+  const btn = document.getElementById("micBtn");
+  if(recognizer){ recognizer.stop(); return; }
+  recognizer = new SpeechRec();
+  // Ekegusii has no recognizer of its own anywhere — fall back to the
+  // nearest available language so there's at least a rough attempt.
+  recognizer.lang = SPEECH_LANG[LANG] || (LANG === "eg" ? "sw-KE" : "en-KE");
+  recognizer.interimResults = false;
+  recognizer.maxAlternatives = 1;
+  btn.classList.add("listening");
+  recognizer.onresult = (e) => {
+    const said = e.results[0][0].transcript;
+    const input = document.getElementById("chatInput");
+    input.value = said;
+    if(LANG === "eg"){
+      // Don't auto-send an unreliable transcript — let the officer check/fix it first.
+      input.focus();
+      voiceNote("Rough transcript above — check and edit it, then press Send.");
+    } else {
+      sendChat();
+    }
+  };
+  recognizer.onerror = () => voiceNote("Didn't catch that — try again, or type instead.");
+  recognizer.onend = () => { btn.classList.remove("listening"); recognizer = null; };
+  recognizer.start();
+});
+
+document.getElementById("voiceToggle").addEventListener("click", function(){
+  voiceRepliesOn = !voiceRepliesOn;
+  this.classList.toggle("on", voiceRepliesOn);
+  if(!voiceRepliesOn){
+    window.speechSynthesis.cancel();
+    if(currentAudio){ currentAudio.pause(); currentAudio = null; }
+  }
+});
+
+// ElevenLabs v3 model IDs supporting Swahili as of the docs checked when this
+// was built — verify against current ElevenLabs docs if this stops working,
+// their model lineup changes over time.
+const ELEVENLABS_MODEL = "eleven_v3";
+
+async function speakWithClonedVoice(text){
+  const { apiKey, voiceId } = getElevenLabsConfig();
+  const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "xi-api-key": apiKey,
+    },
+    body: JSON.stringify({
+      text,
+      model_id: ELEVENLABS_MODEL,
+    }),
+  });
+  if(!res.ok) throw new Error("ElevenLabs request failed: " + res.status);
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  if(currentAudio){ currentAudio.pause(); }
+  currentAudio = new Audio(url);
+  currentAudio.play();
+}
+
+function speak(text){
+  if(!voiceRepliesOn || LANG === "eg") return;
+  if(hasClonedVoice()){
+    speakWithClonedVoice(text).catch(()=>{
+      // If the cloned-voice call fails (bad key, network, etc.) fall back
+      // to the browser's generic voice rather than going silent.
+      if(window.speechSynthesis){
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = SPEECH_LANG[LANG] || "en-KE";
+        window.speechSynthesis.speak(u);
+      }
+    });
+    return;
+  }
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = SPEECH_LANG[LANG] || "en-KE";
+  window.speechSynthesis.speak(u);
+}
+
+/* =========================================================
+   NEW CASE FORM
+   ========================================================= */
+/* =========================================================
+   NEW CASE FORM — conversational, one question at a time.
+   Same underlying record shape as before, so the Case Log
+   and risk stamping keep working unchanged.
+   ========================================================= */
+function setDeep(obj, path, val){
+  const parts = path.split(".");
+  let o = obj;
+  for(let i=0;i<parts.length-1;i++){ o[parts[i]] = o[parts[i]] || {}; o = o[parts[i]]; }
+  o[parts[parts.length-1]] = val;
+}
+function getDeep(obj, path){
+  return path.split(".").reduce((o,k)=> (o && o[k] !== undefined) ? o[k] : undefined, obj) || "";
+}
+
+const WIZ_STEPS = [
+  { key:"category", type:"select", options: CATEGORIES.map(c=>c[0]), required:true,
+    q:{en:"What kind of case is this? Pick the closest match — you can refine it later.",
+       sw:"Hii ni kesi ya aina gani? Chagua inayokaribiana zaidi — unaweza kurekebisha baadaye.",
+       eg:"Ense eye nigo ya mbea ki? Thora eyekare, nokobasa okogenderia inyuma."} },
+  { key:"date", type:"date", required:false,
+    q:{en:"What date was this reported?", sw:"Hii iliripotiwa tarehe gani?", eg:"Ense eye yaretwe rituko ki?"} },
+  { key:"child.name", type:"text", required:true,
+    q:{en:"What's the child's full name?", sw:"Jina kamili la mtoto ni nani?", eg:"Erieta ry'omwana nierieta?"} },
+  { key:"child.sex", type:"select", options:["Male","Female"], required:false,
+    q:{en:"Is the child male or female?", sw:"Mtoto ni wa kiume au wa kike?", eg:"Omwana n'omosacha kobwo omoisia?"} },
+  { key:"child.dob", type:"text", required:false,
+    q:{en:"Date of birth, or roughly how old are they?", sw:"Tarehe ya kuzaliwa, au ana umri gani takribani?", eg:"Rituko ry'okobwarwa, kobwo emyaka ki?"} },
+  { key:"child.hasBirthCert", type:"select", options:["Yes","No","Not sure"], required:false,
+    q:{en:"Does the child have a birth certificate?", sw:"Je, mtoto ana cheti cha kuzaliwa?", eg:"Omwana are n'echeti cha okobwarwa?"} },
+  { key:"child.entryNo", type:"text", required:false, showIf:a=>getDeep(a,"child.hasBirthCert")==="Yes",
+    q:{en:"If you have it, what's the Entry No. on the certificate? Skip if you don't have it with you.",
+       sw:"Kama unayo, Namba ya Usajili ni ipi? Ruka kama huna nayo.",
+       eg:"Namba y'echeti nieing'a? Rigiria otaba nayo."} },
+  { key:"child.hobbies", type:"text", required:false,
+    q:{en:"Anything you know about the child's hobbies or interests?", sw:"Kuna chochote unachojua kuhusu mambo anayopenda mtoto?", eg:"Ogotebia chinyingerwa chi'omwana?"} },
+  { key:"child.friends", type:"text", required:false,
+    q:{en:"Does the child have a close friend or two you know of? (mainly useful for children under 3)",
+       sw:"Mtoto ana rafiki wa karibu unaomjua? (hasa kwa watoto chini ya miaka 3)",
+       eg:"Omwana are n'omosani?"} },
+  { key:"siblingsRaw", type:"textarea", required:false,
+    q:{en:"Does the child have siblings? List each one if you can — name, age, sex — one per line. Leave blank if none.",
+       sw:"Mtoto ana ndugu? Orodhesha kila mmoja ukiwa unaweza — jina, umri, jinsia — mstari mmoja kwa kila mmoja. Acha wazi kama hakuna.",
+       eg:"Omwana are na abanyabo? Bandika buna otigwete."} },
+  { key:"home.county", type:"text", required:false,
+    q:{en:"Which county is the child's home in?", sw:"Nyumbani mwa mtoto ni katika kaunti gani?", eg:"Enyomba y'omwana eri county ki?"} },
+  { key:"home.subCounty", type:"text", required:false,
+    q:{en:"Which sub-county?", sw:"Sub-county gani?", eg:"Sub-county ki?"} },
+  { key:"home.location", type:"text", required:false,
+    q:{en:"Location or village?", sw:"Kata au kijiji gani?", eg:"Location kobwo eciaro ki?"} },
+  { key:"home.landmark", type:"text", required:false,
+    q:{en:"Any landmark or nearest address that would help someone find the place?",
+       sw:"Kuna alama yoyote ya karibu itakayosaidia mtu kupata mahali?", eg:"Ekemenyerani ki'egeye eng'ai?"} },
+  { key:"familyStatus", type:"select", options: FAMILY_STATUS, required:false,
+    q:{en:"How would you describe the child's family situation?", sw:"Ungeelezaje hali ya familia ya mtoto?", eg:"Amang'ana y'omoro gw'omwana n'ayande?"} },
+  { key:"familyStatusOther", type:"text", required:false, showIf:a=>getDeep(a,"familyStatus")==="Other",
+    q:{en:"Please specify.", sw:"Tafadhali eleza.", eg:"Tebia."} },
+  { key:"parents.fatherName", type:"text", required:false,
+    q:{en:"Father's name, if known?", sw:"Jina la baba, kama unajua?", eg:"Erieta ry'omwabo?"} },
+  { key:"parents.fatherContact", type:"text", required:false, showIf:a=>!!getDeep(a,"parents.fatherName"),
+    q:{en:"Father's phone contact, if you have it?", sw:"Namba ya simu ya baba, kama unayo?", eg:"Namba y'omwabo?"} },
+  { key:"parents.motherName", type:"text", required:false,
+    q:{en:"Mother's name, if known?", sw:"Jina la mama, kama unajua?", eg:"Erieta ry'omonyamura?"} },
+  { key:"parents.motherContact", type:"text", required:false, showIf:a=>!!getDeep(a,"parents.motherName"),
+    q:{en:"Mother's phone contact, if you have it?", sw:"Namba ya simu ya mama, kama unayo?", eg:"Namba y'omonyamura?"} },
+  { key:"caregiver.name", type:"text", required:false,
+    q:{en:"If the child is with a caregiver rather than a parent, what's their name?",
+       sw:"Kama mtoto yuko na mlezi badala ya mzazi, jina lake ni nani?", eg:"Omoreri w'omwana nierieta?"} },
+  { key:"caregiver.relationship", type:"text", required:false, showIf:a=>!!getDeep(a,"caregiver.name"),
+    q:{en:"How is the caregiver related to the child?", sw:"Mlezi anahusiana vipi na mtoto?", eg:"Omoreri n'omwana bakorwa buna ki?"} },
+  { key:"caregiver.contact", type:"text", required:false, showIf:a=>!!getDeep(a,"caregiver.name"),
+    q:{en:"Caregiver's phone contact, if you have it?", sw:"Namba ya simu ya mlezi, kama unayo?", eg:"Namba y'omoreri?"} },
+  { key:"history", type:"textarea", required:true,
+    q:{en:"Now, in your own words — what happened? This is the main record of the case.",
+       sw:"Sasa, kwa maneno yako — kulitokea nini? Hii ndiyo rekodi kuu ya kesi.",
+       eg:"Impwani, tebia ime amang'ana ao — ekare ki? Eye nigo ense y'obokong'u."} },
+  { key:"recommendations", type:"textarea", required:false,
+    q:{en:"Any recommendations or next steps, from your side?", sw:"Kuna mapendekezo au hatua zinazofuata, kutoka kwako?", eg:"Ogotebia amang'ana ende ekwana?"} },
+  { key:"referral", type:"text", required:false,
+    q:{en:"Was this referred anywhere — an office or agency?", sw:"Je, hii ilipelekwa mahali fulani — ofisi au wakala?", eg:"Ense eye yatwariwe eng'ai?"} },
+];
+
+let wizStep = 0;
+let wizAnswers = {};
+let wizEmergency = null; // null = use category default; true/false once the officer overrides
+
+function wizIsVisible(step){ return !step.showIf || step.showIf(wizAnswers); }
+function wizVisibleSteps(){ return WIZ_STEPS.filter(wizIsVisible); }
+
+function buildCaseForm(){
+  wizStep = 0;
+  wizAnswers = {};
+  wizEmergency = null;
+  renderWizard();
+}
+
+function wizGoNext(){
+  let i = wizStep + 1;
+  while(i < WIZ_STEPS.length && !wizIsVisible(WIZ_STEPS[i])) i++;
+  wizStep = i;
+  renderWizard();
+}
+function wizGoBack(){
+  let i = wizStep - 1;
+  while(i >= 0 && !wizIsVisible(WIZ_STEPS[i])) i--;
+  wizStep = Math.max(i, 0);
+  renderWizard();
+}
+function wizJumpTo(key){
+  const idx = WIZ_STEPS.findIndex(s=>s.key===key);
+  if(idx>-1){ wizStep = idx; renderWizard(); }
+}
+
+function renderWizard(){
+  const wrap = document.getElementById("caseFormWrap");
+  if(wizStep >= WIZ_STEPS.length){ renderWizReview(); return; }
+
+  const step = WIZ_STEPS[wizStep];
+  const qText = step.q[LANG] || step.q.en;
+  const visible = wizVisibleSteps();
+  const posInVisible = visible.indexOf(step) + 1;
+  const totalVisible = visible.length + 1; // +1 for the review screen
+  const val = getDeep(wizAnswers, step.key);
+
+  let inputHtml = "";
+  if(step.type === "select"){
+    inputHtml = `<div class="wiz-opts" id="wizOpts">` + step.options.map(opt =>
+      `<button type="button" class="wiz-opt-btn ${val===opt?'selected':''}" data-val="${opt}">${opt}</button>`
+    ).join("") + `</div>`;
+  } else if(step.type === "textarea"){
+    inputHtml = `<textarea class="wiz-input" id="wizInput" rows="4">${val}</textarea>`;
+  } else if(step.type === "date"){
+    inputHtml = `<input type="date" class="wiz-input" id="wizInput" value="${val}">`;
+  } else {
+    inputHtml = `<input type="text" class="wiz-input" id="wizInput" value="${val}">`;
+  }
+
+  wrap.innerHTML = `
+    <div class="wiz">
+      <div class="wiz-progress"><div class="wiz-progress-bar" style="width:${(posInVisible/totalVisible*100).toFixed(0)}%"></div></div>
+      <div class="wiz-count">${posInVisible} / ${totalVisible}</div>
+      <div class="wiz-q">${qText}</div>
+      ${inputHtml}
+      <div class="wiz-err" id="wizErr"></div>
+      <div class="wiz-nav">
+        ${wizStep>0 ? `<button class="ghost-btn" id="wizBack">← ${LANG==='sw'?'Rudi':LANG==='eg'?'Subira':'Back'}</button>` : `<span></span>`}
+        <span class="spacer"></span>
+        ${!step.required ? `<button class="ghost-btn" id="wizSkip">${LANG==='sw'?'Ruka':LANG==='eg'?'Rigiria':'Skip'}</button>` : ``}
+        ${step.type!=="select" ? `<button class="primary-btn" id="wizNext">${LANG==='sw'?'Endelea':LANG==='eg'?'Genderia':'Continue'}</button>` : ``}
+      </div>
+    </div>
+  `;
+
+  if(step.type === "select"){
+    wrap.querySelectorAll(".wiz-opt-btn").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        setDeep(wizAnswers, step.key, btn.dataset.val);
+        wizGoNext();
+      });
+    });
+  } else {
+    const inp = document.getElementById("wizInput");
+    inp.focus();
+    if(step.type !== "textarea"){
+      inp.addEventListener("keydown", (e)=>{ if(e.key==="Enter"){ e.preventDefault(); wizCommitAndNext(step, inp); } });
+    }
+  }
+
+  const backBtn = document.getElementById("wizBack");
+  if(backBtn) backBtn.addEventListener("click", wizGoBack);
+  const skipBtn = document.getElementById("wizSkip");
+  if(skipBtn) skipBtn.addEventListener("click", ()=>{ setDeep(wizAnswers, step.key, ""); wizGoNext(); });
+  const nextBtn = document.getElementById("wizNext");
+  if(nextBtn) nextBtn.addEventListener("click", ()=> wizCommitAndNext(step, document.getElementById("wizInput")));
+}
+
+function wizCommitAndNext(step, inputEl){
+  const val = inputEl.value.trim();
+  if(step.required && !val){
+    document.getElementById("wizErr").textContent = t("err_narrative");
+    return;
+  }
+  setDeep(wizAnswers, step.key, val);
+  wizGoNext();
+}
+
+function parseSiblings(raw){
+  if(!raw || !raw.trim()) return [];
+  return raw.split(/\n|;/).map(line=>line.trim()).filter(Boolean).map(line=>{
+    const parts = line.split(",").map(p=>p.trim());
+    return { name: parts[0]||"", age: parts[1]||"", sex: parts[2]||"" };
+  });
+}
+
+function renderWizReview(){
+  const wrap = document.getElementById("caseFormWrap");
+  const category = getDeep(wizAnswers, "category");
+  const risk = (CATEGORIES.find(c => c[0] === category) || ["","standard"])[1];
+  const famStatus = getDeep(wizAnswers,"familyStatus") === "Other" ? getDeep(wizAnswers,"familyStatusOther") : getDeep(wizAnswers,"familyStatus");
+  const siblings = parseSiblings(getDeep(wizAnswers,"siblingsRaw"));
+
+  const parentsFilled = getDeep(wizAnswers,"parents.fatherName") || getDeep(wizAnswers,"parents.motherName");
+  const caregiverFilled = getDeep(wizAnswers,"caregiver.name");
+  const needsGuardian = !parentsFilled && !caregiverFilled;
+
+  const isEmergency = wizEmergency !== null ? wizEmergency : (risk === "high");
+
+  const rows = [
+    ["Category", category || "—"],
+    ["Child", getDeep(wizAnswers,"child.name") || "—"],
+    ["Sex / DOB", [getDeep(wizAnswers,"child.sex"), getDeep(wizAnswers,"child.dob")].filter(Boolean).join(" · ") || "—"],
+    ["Siblings", siblings.length ? siblings.map(s=>s.name).join(", ") : "—"],
+    ["Location", [getDeep(wizAnswers,"home.subCounty"), getDeep(wizAnswers,"home.county")].filter(Boolean).join(", ") || "—"],
+    ["Family status", famStatus || "—"],
+    ["Parent(s)", parentsFilled || "—"],
+    ["Caregiver", caregiverFilled || "—"],
+    ["History", (getDeep(wizAnswers,"history")||"—").slice(0,90) + ((getDeep(wizAnswers,"history")||"").length>90?"…":"")],
+  ];
+
+  const emailSummary = `EMERGENCY — Child Protection Case\n\nCategory: ${category || "—"}\nChild: ${getDeep(wizAnswers,"child.name")||"—"}\nLocation: ${[getDeep(wizAnswers,"home.subCounty"), getDeep(wizAnswers,"home.county")].filter(Boolean).join(", ")||"—"}\n\nWhat happened:\n${getDeep(wizAnswers,"history")||"—"}\n\nReported via J.M_CP Specialist, ${new Date().toLocaleString()}`;
+
+  wrap.innerHTML = `
+    <div class="wiz wiz-review">
+      <h3>${LANG==='sw'?'Hakiki kabla ya kuhifadhi':LANG==='eg'?'Rora kobele y\'okobatia':'Review before saving'}</h3>
+      ${rows.map(([k,v])=>`<div class="wiz-row"><span class="k">${k}</span><span class="v">${v}</span></div>`).join("")}
+
+      <div class="em-toggle">
+        <button type="button" id="emBtnEmergency" class="${isEmergency?'sel-emergency':''}">⚑ ${t("emergency_label")}</button>
+        <button type="button" id="emBtnStandard" class="${!isEmergency?'sel-standard':''}">${t("not_emergency_label")}</button>
+      </div>
+      ${isEmergency ? buildEmergencyActionsHTML(emailSummary) : ""}
+
+      ${needsGuardian ? `<div class="wiz-err" style="margin-top:12px;">${t("err_required")} <button onclick="wizJumpTo('parents.fatherName')" style="border:none;background:none;color:var(--forest);text-decoration:underline;cursor:pointer;">${LANG==='sw'?'Rekebisha':'Fix this'}</button></div>` : ""}
+      <div class="wiz-nav">
+        <button class="ghost-btn" id="wizReviewBack">← ${LANG==='sw'?'Rudi':LANG==='eg'?'Subira':'Back'}</button>
+        <span class="spacer"></span>
+        <button class="primary-btn" id="wizSaveBtn" ${needsGuardian?"disabled":""}>${t("save_case")}</button>
+      </div>
+      <p class="jotlink" style="margin-top:14px;">This log stays on your device. For the official DCS record, still submit through your live Jotform intake (ID 262276166347059) or its QR code.</p>
+    </div>
+  `;
+  document.getElementById("wizReviewBack").addEventListener("click", ()=>{ wizStep = WIZ_STEPS.length-1; renderWizard(); });
+  document.getElementById("emBtnEmergency").addEventListener("click", ()=>{ wizEmergency = true; renderWizReview(); });
+  document.getElementById("emBtnStandard").addEventListener("click", ()=>{ wizEmergency = false; renderWizReview(); });
+  const saveBtn = document.getElementById("wizSaveBtn");
+  if(saveBtn) saveBtn.addEventListener("click", saveWizCase);
+}
+
+function saveWizCase(){
+  const category = getDeep(wizAnswers, "category");
+  const risk = (CATEGORIES.find(c => c[0] === category) || ["","standard"])[1];
+  const famStatus = getDeep(wizAnswers,"familyStatus") === "Other" ? getDeep(wizAnswers,"familyStatusOther") : getDeep(wizAnswers,"familyStatus");
+  const siblings = parseSiblings(getDeep(wizAnswers,"siblingsRaw"));
+  const emergency = wizEmergency !== null ? wizEmergency : (risk === "high");
+
+  const record = {
+    id: "case_" + Date.now(),
+    savedAt: new Date().toISOString(),
+    date: getDeep(wizAnswers,"date"),
+    category, risk, emergency,
+    child: { name:getDeep(wizAnswers,"child.name"), sex:getDeep(wizAnswers,"child.sex"), dob:getDeep(wizAnswers,"child.dob"),
+      hasBirthCert:getDeep(wizAnswers,"child.hasBirthCert"), entryNo:getDeep(wizAnswers,"child.entryNo"),
+      hobbies:getDeep(wizAnswers,"child.hobbies"), friends:getDeep(wizAnswers,"child.friends") },
+    siblings,
+    home: { county:getDeep(wizAnswers,"home.county"), subCounty:getDeep(wizAnswers,"home.subCounty"),
+      location:getDeep(wizAnswers,"home.location"), landmark:getDeep(wizAnswers,"home.landmark") },
+    familyStatus: famStatus,
+    parents: { fatherName:getDeep(wizAnswers,"parents.fatherName"), fatherContact:getDeep(wizAnswers,"parents.fatherContact"),
+      motherName:getDeep(wizAnswers,"parents.motherName"), motherContact:getDeep(wizAnswers,"parents.motherContact") },
+    caregiver: { name:getDeep(wizAnswers,"caregiver.name"), relationship:getDeep(wizAnswers,"caregiver.relationship"), contact:getDeep(wizAnswers,"caregiver.contact") },
+    history: getDeep(wizAnswers,"history"), recommendations:getDeep(wizAnswers,"recommendations"), referral:getDeep(wizAnswers,"referral")
+  };
+
+  window.storage.set(record.id, JSON.stringify(record), false)
+    .then(()=>{
+      refreshCaseLog();
+      buildCaseForm();
+      const wrap = document.getElementById("caseFormWrap");
+      wrap.insertAdjacentHTML("afterbegin", `<div class="wiz-err" style="color:var(--forest);">${t("saved_ok")}</div>`);
+    })
+    .catch(()=>{ alert("Could not save — storage error."); });
+}
+
+/* =========================================================
+   CASE LOG
+   ========================================================= */
+async function refreshCaseLog(){
+  const wrap = document.getElementById("logwrap");
+  wrap.innerHTML = `<div class="empty">${t("thinking")}</div>`;
+  let keys = [];
+  try{
+    const listed = await window.storage.list("case_", false);
+    keys = (listed && listed.keys) || [];
+  }catch(e){ keys = []; }
+
+  if(!keys.length){
+    wrap.innerHTML = `<div class="empty"><div class="big">${t("no_cases_big")}</div><div>${t("no_cases_small")}</div></div>`;
+    document.getElementById("riskCount").classList.add("hide");
+    return;
+  }
+
+  const records = [];
+  for(const k of keys){
+    try{
+      const r = await window.storage.get(k, false);
+      if(r && r.value) records.push(JSON.parse(r.value));
+    }catch(e){}
+  }
+  records.sort((a,b)=> (b.savedAt||"").localeCompare(a.savedAt||""));
+
+  const highCount = records.filter(r=> r.emergency !== undefined ? r.emergency : r.risk==="high").length;
+  const rc = document.getElementById("riskCount");
+  if(highCount>0){ rc.textContent = highCount; rc.classList.remove("hide"); } else rc.classList.add("hide");
+
+  wrap.innerHTML = records.map(r=>{
+    const name = r.child && r.child.name ? r.child.name : "(name withheld)";
+    const dateStr = r.savedAt ? new Date(r.savedAt).toLocaleDateString() : "";
+    const loc = [r.home && r.home.subCounty, r.home && r.home.county].filter(Boolean).join(", ");
+    const isEmergency = r.emergency !== undefined ? r.emergency : r.risk==="high";
+    const emailSummary = `EMERGENCY — Child Protection Case\n\nCategory: ${r.category||"—"}\nChild: ${name}\nLocation: ${loc||"—"}\n\nWhat happened:\n${r.history||"—"}\n\nLogged via J.M_CP Specialist, ${dateStr}`;
+    return `
+    <div class="case-card">
+      <div class="stamp ${isEmergency ? "high" : "standard"}">${isEmergency ? "EMER-<br>GENCY" : "STANDARD"}</div>
+      <div class="case-meta">
+        <div class="top"><span class="id">${r.id}</span><span class="id">${dateStr}</span></div>
+        <h4>${name} — ${r.category || "Uncategorised"}</h4>
+        <p>${loc ? loc + " · " : ""}${(r.history || "").slice(0,140)}${(r.history||"").length>140?"…":""}</p>
+        <div class="case-actions">
+          <button onclick='alert(${JSON.stringify(JSON.stringify(r, null, 2))})'>${t("view")}</button>
+          <button onclick="deleteCase('${r.id}')">${t("delete")}</button>
+        </div>
+        ${isEmergency ? buildEmergencyActionsHTML(emailSummary) : ""}
+      </div>
+    </div>`;
+  }).join("");
+}
+
+async function deleteCase(id){
+  try{
+    const r = await window.storage.get(id, false);
+    await window.storage.delete(id, false);
+  }catch(e){}
+  refreshCaseLog();
+}
+window.deleteCase = deleteCase;
+
+/* =========================================================
+   GUIDE PANEL
+   ========================================================= */
+function buildGuide(){
+  const wrap = document.getElementById("guidewrap");
+  if(LANG === "en"){
+    wrap.innerHTML = `
+      <h3>General / neglect / custody-type cases</h3>
+      <div class="path">
+        <div class="step"><b>1. Local administration first.</b> Report to the assistant chief or chief of the area.</div>
+        <div class="step"><b>2. Chief's baraza.</b> Both parties are summoned to a set date to discuss and attempt cooperation on caring for the child.</div>
+        <div class="step"><b>3. If unresolved</b>, the chief refers the case to the sub-county children's office with a referral letter.</div>
+        <div class="step"><b>If the chief is unreachable</b>, go to police, or the hospital if medical attention is needed.</div>
+      </div>
+
+      <h3>Defilement / sexual abuse — urgent, distinct pathway</h3>
+      <div class="path">
+        <div class="step"><b>1. Hospital first.</b> Treatment plus specimen/evidence documentation (P3/PRC forms).</div>
+        <div class="step"><b>2. Police accompany.</b> Should escort the victim to hospital and record statements; if unreachable, the children's office is the fallback.</div>
+        <div class="step"><b>3. Formal report.</b> Victim reports to police with the hospital forms.</div>
+        <div class="step"><b>4. DCI review.</b> Once police gather sufficient evidence, the file goes to the DCI, which decides on charging; police may arrest.</div>
+        <div class="step"><b>Avoid media</b> at this stage — coverage can tip off perpetrators before arrest.</div>
+      </div>
+
+      <div class="disclaim"><span class="badge-note">LEGAL</span>Suppressing a defilement case ("kangaroo courts") can expose the suppressor to accomplice liability. These cases do not expire under Kenyan law. A child's own testimony is strong evidence alongside P3/PRC forms and physical evidence.</div>
+
+      <h3>Adoption — quick reference</h3>
+      <p>Children Act 2022, Part XIV (Sec 183–204). Declared "free for adoption" by NCCS → placement via a <b>licensed</b> adoption society only → 3 months' continuous care → High Court application → in-chambers hearing → Adoption Order. Applicants: 25–65, at least 21 years older than the child (waived for biological parents).</p>
+      <div class="disclaim"><span class="badge-note">GUARDRAIL</span>Never a private/direct placement outside a licensed society. Never a case-specific eligibility ruling. Never a promised timeline.</div>
+
+      <h3>Informal placement of children</h3>
+      <p>Children acquired outside any legal framework are frequently rejected by the extended family once the person who took them in dies. Always direct long-term caregivers toward a recognised legal route: adoption, guardianship, foster care, kinship care, or Kafaalah.</p>
+    `;
+  } else if(LANG === "sw"){
+    wrap.innerHTML = `
+      <h3>Kesi za jumla / kutelekezwa / ulezi</h3>
+      <div class="path">
+        <div class="step"><b>1. Utawala wa eneo kwanza.</b> Ripoti kwa chifu msaidizi au chifu wa eneo.</div>
+        <div class="step"><b>2. Baraza la chifu.</b> Pande zote mbili zinaitwa tarehe fulani kuzungumza na kujaribu ushirikiano wa malezi ya mtoto.</div>
+        <div class="step"><b>3. Ikiwa haitatuliwi</b>, chifu anapeleka kesi kwa ofisi ya watoto ya sub-county na barua ya rufaa.</div>
+        <div class="step"><b>Chifu asipopatikana</b>, nenda polisi, au hospitali ikiwa matibabu yanahitajika.</div>
+      </div>
+
+      <h3>Ubakaji wa watoto — njia ya haraka, tofauti</h3>
+      <div class="path">
+        <div class="step"><b>1. Hospitali kwanza.</b> Matibabu na uandikishaji wa ushahidi (fomu za P3/PRC).</div>
+        <div class="step"><b>2. Polisi wasindikize.</b> Wanapaswa kuandamana na muathiriwa hospitalini na kuchukua taarifa; wasipopatikana, ofisi ya watoto ndiyo mbadala.</div>
+        <div class="step"><b>3. Ripoti rasmi.</b> Muathiriwa anaripoti polisi akiwa na fomu za hospitali.</div>
+        <div class="step"><b>4. Ukaguzi wa DCI.</b> Polisi wakikusanya ushahidi wa kutosha, faili linapelekwa DCI kuamua mashtaka; polisi wanaweza kukamata.</div>
+        <div class="step"><b>Epuka vyombo vya habari</b> katika hatua hii — inaweza kuwatahadharisha wahalifu kabla ya kukamatwa.</div>
+      </div>
+
+      <div class="disclaim"><span class="badge-note">KISHERIA</span>Kuficha kesi ya ubakaji ("mahakama za kijadi") kunaweza kumfanya mfichaji kushtakiwa kama mshirika. Kesi hizi hazina muda wa kuisha kisheria. Ushuhuda wa mtoto ni ushahidi mkubwa pamoja na fomu za P3/PRC na ushahidi wa kimwili.</div>
+
+      <h3>Kuasili — muhtasari wa haraka</h3>
+      <p>Sheria ya Watoto 2022, Sehemu ya XIV. Kutangazwa "huru kuasiliwa" na NCCS → uwekaji kupitia chama cha kuasili chenye <b>leseni</b> pekee → miezi 3 ya malezi endelevu → maombi Mahakama Kuu → usikilizaji wa faragha → Amri ya Kuasili. Waombaji: miaka 25–65, wakubwa kwa angalau miaka 21 kuliko mtoto (isipokuwa wazazi wa kibiolojia).</p>
+      <div class="disclaim"><span class="badge-note">TAHADHARI</span>Kamwe usiweke mtoto kibinafsi nje ya chama chenye leseni. Kamwe usitoe uamuzi wa kisheria kwa kesi maalum. Kamwe usiahidi muda.</div>
+
+      <h3>Uwekaji usio rasmi wa watoto</h3>
+      <p>Watoto waliochukuliwa nje ya mfumo wowote wa kisheria mara nyingi wanakataliwa na jamaa pale mtu aliyewachukua anapofariki. Elekeza walezi wa muda mrefu kwenye njia inayotambulika kisheria: kuasili, ulezi, malezi ya kambo, malezi ya jamaa, au Kafaalah.</p>
+    `;
+  } else {
+    wrap.innerHTML = `
+      <div class="disclaim"><span class="badge-note">DRAFT</span>Ekegusii endeni yaya nigo ekero y'okwamba (draft) — Baria omonto oigwete Ekegusii korao gochenkerera abakoro amang'ana aya.</div>
+      <h3>Ense chio jieire jia okorendekana / okoregwa</h3>
+      <div class="path">
+        <div class="step"><b>1. Omogambi bwambere.</b> Reta ime omokuru wa chifu kobwo chifu w'ekiaro.</div>
+        <div class="step"><b>2. Baraza ya chifu.</b> Abanto bombere batwarwa tarehe emwe okobua na okogenda okorendekana omwana.</div>
+        <div class="step"><b>3. Ekero kirarindirwe</b>, chifu naanyorania ense ime ofesi y'abana y'sub-county n'obaruwa.</div>
+        <div class="step"><b>Ekero chifu tabwoire</b>, retera abapolisi, kobwo ospitali omwana atebekwa okobasa.</div>
+      </div>
+      <h3>Ense y'okonyara omwana — enjira y'amabaka</h3>
+      <div class="path">
+        <div class="step"><b>1. Ospitali mbele.</b> Okobasekwa n'okoandika obosaakiri (P3/PRC).</div>
+        <div class="step"><b>2. Abapolisi bataam'e.</b> Batwarane n'omwana ospitali; ekero tibabwoire, ofesi y'abana neyo eng'ai.</div>
+        <div class="step"><b>3. Okoreta amakiaro.</b> Omwana naareta abapolisi na amakarata y'ospitali.</div>
+        <div class="step"><b>4. DCI.</b> Abapolisi bagachura obosaakiri, faili neritwarwa DCI koreng'a bakiaro.</div>
+      </div>
+      <div class="disclaim"><span class="badge-note">AMATEGEKO</span>Okobisa ense y'okonyara ("baraza za kiabo") nigo okobasa okoreta omonto oise komanywa komo omorabani. Ense inche titirendagwo n'obwoire. Amang'ana y'omwana nigo obosaakiri obokong'u.</div>
+      <h3>Okoresera — okogenderia</h3>
+      <p>Sheria y'Abana 2022, Ekiungo XIV. Omwana omotangazirwe "aikanwa okoreserwa" na NCCS → aturwa ime chama ekiimwo <b>leseni</b> — omweri 3 y'okorenda → obosaba Mahakama Egendia → obosikirisia. Abasabi: myaka 25–65.</p>
+    `;
+  }
+}
+
+/* =========================================================
+   NAV / LANG / INIT
+   ========================================================= */
+async function renderGlossary(){
+  const wrap = document.getElementById("glossaryWrap");
+  wrap.innerHTML = `<div class="empty">${t("thinking")}</div>`;
+
+  let pendingKeys = [];
+  try{
+    const listed = await window.storage.list("eg_pending_", false);
+    pendingKeys = (listed && listed.keys) || [];
+  }catch(e){}
+  const pending = [];
+  for(const k of pendingKeys){
+    try{
+      const r = await window.storage.get(k, false);
+      if(r && r.value) pending.push({ key:k, ...JSON.parse(r.value) });
+    }catch(e){}
+  }
+  pending.sort((a,b)=> (b.createdAt||"").localeCompare(a.createdAt||""));
+
+  const pendingHtml = pending.length ? pending.map(p => `
+    <div class="gloss-card pending">
+      <div class="gloss-term">${p.term}</div>
+      <div class="gloss-context">${t("context_label")} "${(p.context||"").slice(0,120)}${(p.context||"").length>120?"…":""}"</div>
+      <div class="gloss-meaning-row">
+        <label style="font-size:12px; color:var(--ink-soft); flex:0 0 auto;">${t("meaning_label")}:</label>
+        <input id="meaning_${p.key}" value="${p.guess.replace(/"/g,'&quot;')}">
+      </div>
+      <div class="gloss-actions">
+        <button class="gloss-approve" onclick="approveGlossaryTerm('${p.key}', '${p.term.replace(/'/g,"\\'")}')">${t("approve_btn")}</button>
+        <button class="gloss-reject" onclick="rejectGlossaryTerm('${p.key}')">${t("reject_btn")}</button>
+      </div>
+    </div>`).join("") : `<div class="empty">${t("no_pending")}</div>`;
+
+  const approvedHtml = ekegusiiGlossary.length ? ekegusiiGlossary.map((g,i) => `
+    <div class="gloss-approved-row">
+      <span class="term">${g.term}</span>
+      <span class="meaning">${g.meaning}</span>
+      <button onclick="forgetGlossaryTerm(${i})">${t("forget_btn")}</button>
+    </div>`).join("") : `<div class="empty">${t("no_approved")}</div>`;
+
+  wrap.innerHTML = `
+    <div class="wiz" style="max-width:640px;">
+      <p class="setup-intro">${t("glossary_sub")}</p>
+      <div class="section">
+        <h3>${t("pending_title")}</h3>
+        <div class="body">${pendingHtml}</div>
+      </div>
+      <div class="section">
+        <h3>${t("approved_title")}</h3>
+        <div class="body">${approvedHtml}</div>
+      </div>
+    </div>
+  `;
+}
+
+async function approveGlossaryTerm(key, term){
+  const input = document.getElementById("meaning_" + key);
+  const meaning = input ? input.value.trim() : "";
+  if(!meaning) return;
+  ekegusiiGlossary.push({ term, meaning, approvedAt: new Date().toISOString() });
+  await saveGlossary();
+  await window.storage.delete(key, false);
+  refreshGlossaryBadge();
+  renderGlossary();
+}
+async function rejectGlossaryTerm(key){
+  await window.storage.delete(key, false);
+  refreshGlossaryBadge();
+  renderGlossary();
+}
+async function forgetGlossaryTerm(index){
+  ekegusiiGlossary.splice(index, 1);
+  await saveGlossary();
+  renderGlossary();
+}
+window.approveGlossaryTerm = approveGlossaryTerm;
+window.rejectGlossaryTerm = rejectGlossaryTerm;
+window.forgetGlossaryTerm = forgetGlossaryTerm;
+
+function renderSetup(){
+  const wrap = document.getElementById("setupWrap");
+  const c = emergencyContacts;
+  const existingKey = getStoredApiKey();
+
+  const backupSectionHtml = `
+      <div class="section">
+        <h3>💾 ${t("backup_title")}</h3>
+        <div class="body">
+          <p class="setup-intro" style="margin-bottom:12px;">${t("backup_intro")}</p>
+          <div class="submitbar" style="flex-wrap:wrap;">
+            <button class="primary-btn" id="exportBtn" type="button">${t("export_btn")}</button>
+            <button class="ghost-btn" id="importBtn" type="button">${t("import_btn")}</button>
+            <input type="file" id="importFile" accept="application/json" style="display:none;">
+            <span id="backupMsg" style="font-size:12.5px; font-weight:600;"></span>
+          </div>
+        </div>
+      </div>`;
+
+  const connectionSectionHtml = RUNNING_STANDALONE ? `
+      <div class="section">
+        <h3>⚡ ${t("conn_title")}</h3>
+        <div class="body">
+          <p class="setup-intro" style="margin-bottom:12px;">${t("conn_intro")}</p>
+          <div class="field full"><label>${t("conn_key_label")}</label>
+            <input id="s_apiKey" type="password" value="${existingKey}" placeholder="${t("conn_key_placeholder")}">
+          </div>
+          <div class="submitbar" style="margin-top:10px;">
+            <button class="primary-btn" id="saveKeyBtn" type="button">${t("conn_save")}</button>
+            ${existingKey ? `<button class="ghost-btn" id="clearKeyBtn" type="button">${t("conn_clear")}</button>` : ``}
+            <span id="connMsg" style="color:var(--forest); font-size:12.5px; font-weight:600;"></span>
+          </div>
+        </div>
+      </div>` : `
+      <div class="hintbox" style="margin-bottom:18px;">✓ ${t("conn_running_in_claude")}</div>`;
+
+  const elConfig = getElevenLabsConfig();
+  const voiceSectionHtml = `
+      <div class="section">
+        <h3>🎙️ ${t("voice_clone_title")}</h3>
+        <div class="body">
+          <p class="setup-intro" style="margin-bottom:12px;">${t("voice_clone_intro")}</p>
+          <div class="hintbox" style="margin-bottom:14px;">${t("eg_no_voice_clone_note")}</div>
+          <div class="grid">
+            <div class="field"><label>${t("elevenlabs_key_label")}</label>
+              <input id="s_elKey" type="password" value="${elConfig.apiKey}" placeholder="el_...">
+            </div>
+            <div class="field"><label>${t("elevenlabs_voiceid_label")}</label>
+              <input id="s_elVoice" value="${elConfig.voiceId}">
+            </div>
+          </div>
+          <div class="submitbar" style="margin-top:10px;">
+            <button class="primary-btn" id="saveVoiceBtn" type="button">${t("elevenlabs_save")}</button>
+            ${(elConfig.apiKey || elConfig.voiceId) ? `<button class="ghost-btn" id="clearVoiceBtn" type="button">${t("elevenlabs_clear")}</button>` : ``}
+            <button class="ghost-btn" id="testVoiceBtn" type="button">${t("voice_clone_test_btn")}</button>
+            <span id="voiceSetupMsg" style="font-size:12.5px; font-weight:600;"></span>
+          </div>
+        </div>
+      </div>`;
+
+  wrap.innerHTML = `
+    <div class="wiz" style="max-width:640px;">
+      ${backupSectionHtml}
+      ${connectionSectionHtml}
+      ${voiceSectionHtml}
+      <p class="setup-intro">${t("setup_intro")}</p>
+      <div class="section">
+        <h3>${t("fld_chief_name")} / ${t("fld_asstchief_name")}</h3>
+        <div class="body grid">
+          <div class="field"><label>${t("fld_chief_name")}</label><input id="s_chiefName" value="${c.chiefName}"></div>
+          <div class="field"><label>${t("fld_chief_phone")}</label><input id="s_chiefPhone" value="${c.chiefPhone}" placeholder="07XXXXXXXX"></div>
+          <div class="field"><label>${t("fld_asstchief_name")}</label><input id="s_asstChiefName" value="${c.asstChiefName}"></div>
+          <div class="field"><label>${t("fld_asstchief_phone")}</label><input id="s_asstChiefPhone" value="${c.asstChiefPhone}" placeholder="07XXXXXXXX"></div>
+        </div>
+      </div>
+      <div class="section">
+        <h3>${t("fld_police_name")} / ${t("fld_subcounty_name")}</h3>
+        <div class="body grid">
+          <div class="field"><label>${t("fld_police_name")}</label><input id="s_policeName" value="${c.policeName}"></div>
+          <div class="field"><label>${t("fld_police_phone")}</label><input id="s_policePhone" value="${c.policePhone}" placeholder="07XXXXXXXX"></div>
+          <div class="field"><label>${t("fld_subcounty_name")}</label><input id="s_subCountyName" value="${c.subCountyName}"></div>
+          <div class="field"><label>${t("fld_subcounty_phone")}</label><input id="s_subCountyPhone" value="${c.subCountyPhone}" placeholder="07XXXXXXXX"></div>
+        </div>
+      </div>
+      <div class="section">
+        <h3>${t("fld_notify_email")}</h3>
+        <div class="body">
+          <div class="field full"><label>${t("fld_notify_email")}</label><input id="s_notifyEmail" type="email" value="${c.notifyEmail}" placeholder="josephmaticha3@gmail.com"></div>
+        </div>
+      </div>
+      <div class="submitbar">
+        <button class="primary-btn" id="saveContactsBtn">${t("save_contacts")}</button>
+        <span id="setupMsg" style="color:var(--forest); font-size:12.5px; font-weight:600;"></span>
+      </div>
+    </div>
+  `;
+  document.getElementById("exportBtn").addEventListener("click", exportAllData);
+  document.getElementById("importBtn").addEventListener("click", ()=> document.getElementById("importFile").click());
+  document.getElementById("importFile").addEventListener("change", (e)=>{
+    const file = e.target.files[0];
+    if(file) importAllDataFromFile(file);
+    e.target.value = "";
+  });
+  if(RUNNING_STANDALONE){
+    document.getElementById("saveKeyBtn").addEventListener("click", ()=>{
+      setStoredApiKey(document.getElementById("s_apiKey").value.trim());
+      document.getElementById("connMsg").textContent = t("conn_saved");
+      renderSetup();
+    });
+    const clearBtn = document.getElementById("clearKeyBtn");
+    if(clearBtn) clearBtn.addEventListener("click", ()=>{ setStoredApiKey(""); renderSetup(); });
+  }
+  document.getElementById("saveVoiceBtn").addEventListener("click", ()=>{
+    setElevenLabsConfig(
+      document.getElementById("s_elKey").value.trim(),
+      document.getElementById("s_elVoice").value.trim()
+    );
+    document.getElementById("voiceSetupMsg").style.color = "var(--forest)";
+    document.getElementById("voiceSetupMsg").textContent = t("elevenlabs_saved");
+    updateVoiceAvailability();
+    renderSetup();
+  });
+  const clearVoiceBtn = document.getElementById("clearVoiceBtn");
+  if(clearVoiceBtn) clearVoiceBtn.addEventListener("click", ()=>{ setElevenLabsConfig("",""); updateVoiceAvailability(); renderSetup(); });
+  document.getElementById("testVoiceBtn").addEventListener("click", async ()=>{
+    const msgEl = document.getElementById("voiceSetupMsg");
+    msgEl.style.color = "var(--ink-soft)";
+    msgEl.textContent = t("voice_test_playing");
+    const sample = LANG === "sw" ? "Habari, hii ni sauti yako ikijaribiwa." : "Hello, this is your voice being tested.";
+    try{
+      if(hasClonedVoice()){
+        await speakWithClonedVoice(sample);
+      } else if(window.speechSynthesis){
+        const u = new SpeechSynthesisUtterance(sample);
+        u.lang = LANG==="sw" ? "sw-KE" : "en-KE";
+        window.speechSynthesis.speak(u);
+      }
+      msgEl.textContent = "";
+    }catch(e){
+      msgEl.style.color = "var(--red)";
+      msgEl.textContent = t("elevenlabs_error");
+    }
+  });
+  document.getElementById("saveContactsBtn").addEventListener("click", async ()=>{
+    emergencyContacts = {
+      chiefName: document.getElementById("s_chiefName").value.trim(),
+      chiefPhone: document.getElementById("s_chiefPhone").value.trim(),
+      asstChiefName: document.getElementById("s_asstChiefName").value.trim(),
+      asstChiefPhone: document.getElementById("s_asstChiefPhone").value.trim(),
+      policeName: document.getElementById("s_policeName").value.trim(),
+      policePhone: document.getElementById("s_policePhone").value.trim(),
+      subCountyName: document.getElementById("s_subCountyName").value.trim(),
+      subCountyPhone: document.getElementById("s_subCountyPhone").value.trim(),
+      notifyEmail: document.getElementById("s_notifyEmail").value.trim(),
+    };
+    try{
+      await window.storage.set("emergency_contacts", JSON.stringify(emergencyContacts), false);
+      document.getElementById("setupMsg").textContent = t("contacts_saved");
+    }catch(e){
+      document.getElementById("setupMsg").textContent = "Could not save — storage error.";
+    }
+  });
+}
+
+document.querySelectorAll(".tab").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    const tab = btn.dataset.tab;
+    ["chat","newcase","log","guide","setup","glossary","research"].forEach(p=>{
+      document.getElementById("panel-"+p).classList.toggle("hide", p!==tab);
+    });
+    const titles = {
+      chat:["top_chat_title","top_chat_sub"], newcase:["top_new_title","top_new_sub"],
+      log:["top_log_title","top_log_sub"], guide:["top_guide_title","top_guide_sub"],
+      setup:["setup_title","setup_sub"], glossary:["glossary_title","glossary_sub"],
+      research:["research_title","research_sub"]
+    };
+    document.getElementById("topTitle").textContent = t(titles[tab][0]);
+    document.getElementById("topSub").textContent = t(titles[tab][1]);
+    if(tab==="log") refreshCaseLog();
+    if(tab==="guide") buildGuide();
+    if(tab==="setup") renderSetup();
+    if(tab==="glossary") renderGlossary();
+    if(tab==="research") renderResearch();
+  });
+});
+
+document.querySelectorAll(".langsw button").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll(".langsw button").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    LANG = btn.dataset.lang;
+    applyI18n();
+    greet();
+    buildCaseForm();
+    buildGuide();
+    const activeTab = document.querySelector(".tab.active").dataset.tab;
+    const titles = {
+      chat:["top_chat_title","top_chat_sub"], newcase:["top_new_title","top_new_sub"],
+      log:["top_log_title","top_log_sub"], guide:["top_guide_title","top_guide_sub"],
+      setup:["setup_title","setup_sub"], glossary:["glossary_title","glossary_sub"],
+      research:["research_title","research_sub"]
+    };
+    document.getElementById("topTitle").textContent = t(titles[activeTab][0]);
+    document.getElementById("topSub").textContent = t(titles[activeTab][1]);
+    if(activeTab==="setup") renderSetup();
+    if(activeTab==="log") refreshCaseLog();
+    if(activeTab==="glossary") renderGlossary();
+    if(activeTab==="research") renderResearch();
+  });
+});
+
+function applyI18n(){
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    el.textContent = t(el.dataset.i18n);
+  });
+  document.querySelectorAll("[data-i18n-ph]").forEach(el=>{
+    el.placeholder = t(el.dataset.i18nPh);
+  });
+  const banner = document.getElementById("egDraftBanner");
+  if(LANG === "eg"){
+    banner.textContent = "⚠ " + STR.en.eg_draft_banner;
+    banner.classList.remove("hide");
+  } else {
+    banner.classList.add("hide");
+  }
+}
+
+applyI18n();
+Promise.all([loadEmergencyContacts(), loadGlossary(), loadResearch()]).then(()=>{
+  greet();
+  buildCaseForm();
+  buildGuide();
+  refreshCaseLog();
+  refreshGlossaryBadge();
+  refreshResearchBadge();
+});
+</script>
+</body>
+</html>
