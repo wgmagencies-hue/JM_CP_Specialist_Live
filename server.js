@@ -38,6 +38,15 @@ const { google } = require("googleapis");
 const app = express();
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(__dirname));
+
+app.get("/", (req, res) => {
+  const publicIndex = path.join(__dirname, "public", "index.html");
+  const rootIndex = path.join(__dirname, "index.html");
+  if (fs.existsSync(publicIndex)) return res.sendFile(publicIndex);
+  if (fs.existsSync(rootIndex)) return res.sendFile(rootIndex);
+  res.status(404).send("index.html not found");
+});
 
 const {
   ANTHROPIC_API_KEY,
