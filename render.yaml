@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: jm-cp-specialist
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    autoDeploy: true
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: PUBLIC_CHAT_RATE_LIMIT
+        value: "20"
+      - key: ADMIN_KEY
+        generateValue: true

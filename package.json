@@ -1,0 +1,22 @@
+{
+  "name": "jm-cp-specialist-whatsapp",
+  "version": "1.2.0",
+  "description": "WhatsApp channel for J.M_CP Specialist (child protection assistant) — plus scheduled research digest, email monitoring, and public website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "get-gmail-token": "node get-gmail-token.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "body-parser": "^1.20.2",
+    "node-fetch": "2.7.0",
+    "node-cron": "^3.0.3",
+    "googleapis": "^140.0.0"
+  },
+  "devDependencies": {
+    "open": "^10.1.0",
+    "nodemon": "^3.1.4"
+  }
+}
