@@ -157,6 +157,9 @@ app.post("/webhook", async (req, res) => {
    3. Anthropic call
    ========================================================= */
 async function callClaude(userText) {
+  if (!ANTHROPIC_API_KEY) {
+    return "ℹ️ J.M_CP Specialist [Demo Mode]: Server connection is live! Add ANTHROPIC_API_KEY in Render settings to enable full AI responses.";
+  }
   const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
@@ -165,7 +168,7 @@ async function callClaude(userText) {
       "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify({
-      model: "claude-sonnet-4-6",
+      model: "claude-3-5-sonnet-latest",
       max_tokens: 600,
       system: SYSTEM_PROMPT + approvedResearchPromptBlock(),
       messages: [{ role: "user", content: userText }],
@@ -272,6 +275,12 @@ app.post("/api/chat", async (req, res) => {
   recordUsage(ip);
   const langLabel = { en: "English", sw: "Kiswahili", eg: "Ekegusii" }[safeLang];
 
+  if (!ANTHROPIC_API_KEY) {
+    return res.json({
+      reply: "✅ J.M_CP Specialist [Free Demo Mode]: Your website & Render server are working 100% perfectly! This is a free demonstration response. For immediate emergency help in Kenya, call 116 (Child Helpline). When ready, add an ANTHROPIC_API_KEY in Render to activate live AI responses."
+    });
+  }
+
   try {
     const apiRes = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -281,7 +290,7 @@ app.post("/api/chat", async (req, res) => {
         "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: "claude-sonnet-4-6",
+        model: "claude-3-5-sonnet-latest",
         max_tokens: 900,
         system: SYSTEM_PROMPT + approvedResearchPromptBlock(),
         messages: [{ role: "user", content: `[Respond in: ${langLabel}]\n\n${message}` }],
@@ -388,7 +397,7 @@ async function runResearchDigest() {
         "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: "claude-sonnet-4-6",
+        model: "claude-3-5-sonnet-latest",
         max_tokens: 1200,
         tools: [{ type: "web_search_20250305", name: "web_search" }],
         messages: [{ role: "user", content: RESEARCH_PROMPT }],
